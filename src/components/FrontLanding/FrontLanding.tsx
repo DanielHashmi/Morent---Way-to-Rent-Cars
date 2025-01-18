@@ -1,20 +1,15 @@
-import { CARCARD } from "@/types/types"
+import { CAR } from "@/types/types"
 import Card from "../Card"
 import CarCard from "./CarCard"
 import LocationSelector from "./LocationSelector"
 import Header from "../Header"
 import Button from "../Button"
-import client from "@/sanity/lib/client"
-import { CardQuery } from "@/sanity/lib/grok"
 import Link from "next/link"
 
 const FrontLanding = async () => {
-    let carDetails: CARCARD[] = [];
-    try {
-        carDetails = await client.fetch(CardQuery);
-    } catch (error) {
-        console.log('No internet! or something else occurred.', error);
-    }
+    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+    const carDetails: CAR[] = await data.json();
+
     return (
         <div className="md:px-16 px-6 py-8 bg-[#f6f7f9]">
             <div className="flex gap-6 justify-center">
@@ -37,18 +32,22 @@ const FrontLanding = async () => {
 
             <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
                 <div className="flex gap-8 py-6  xl:w-[82rem] overflow-x-scroll">
-                    {carDetails.map((obj, key) => (
+                    {carDetails.filter(car => car.tags && car.tags.includes('popular')).map((obj, key) => (
                         <Card key={key} data={{
-                            _id: obj._id,
-                            card_type: 'mobile',
+                            slug: obj.slug,
                             name: obj.name,
-                            current_price: obj.current_price,
+                            price_per_day: obj.price_per_day,
                             image: obj.image,
-                            car_type: obj.car_type,
+                            type: obj.type,
                             heart: obj.heart,
-                            icons: obj.icons,
-                            old_price: obj.old_price,
-                            slug: obj.slug
+                            original_price: obj.original_price,
+                            available: obj.available,
+                            fuel_capacity: obj.fuel_capacity,
+                            seating_capacity: obj.seating_capacity,
+                            tags: obj.tags,
+                            transmission: obj.transmission,
+                            reviews: obj.reviews,
+                            desc: obj.desc,
                         }} />
                     ))}
                 </div>
@@ -57,32 +56,22 @@ const FrontLanding = async () => {
 
             <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
                 <div className="flex gap-8 py-6 xl:w-[82rem] flex-wrap">
-                    {carDetails.map((obj, key) => (
+                    {carDetails.filter(car => car.tags && car.tags.includes('recommended')).map((obj, key) => (
                         <Card key={key} data={{
-                            card_type: '',
-                            _id: obj._id,
+                            slug: obj.slug,
                             name: obj.name,
-                            current_price: obj.current_price,
+                            price_per_day: obj.price_per_day,
                             image: obj.image,
-                            car_type: obj.car_type,
+                            type: obj.type,
                             heart: obj.heart,
-                            icons: obj.icons,
-                            old_price: obj.old_price,
-                            slug: obj.slug
-                        }} />
-                    ))}
-                    {carDetails.map((obj, key) => (
-                        <Card key={key} data={{
-                            card_type: '',
-                            _id: obj._id,
-                            name: obj.name,
-                            current_price: obj.current_price,
-                            image: obj.image,
-                            car_type: obj.car_type,
-                            heart: obj.heart,
-                            icons: obj.icons,
-                            old_price: obj.old_price,
-                            slug: obj.slug
+                            original_price: obj.original_price,
+                            available: obj.available,
+                            fuel_capacity: obj.fuel_capacity,
+                            seating_capacity: obj.seating_capacity,
+                            tags: obj.tags,
+                            transmission: obj.transmission,
+                            reviews: obj.reviews,
+                            desc: obj.desc,
                         }} />
                     ))}
                 </div>

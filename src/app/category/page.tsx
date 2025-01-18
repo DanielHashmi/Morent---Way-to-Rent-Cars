@@ -3,25 +3,27 @@ import Button from "@/components/Button"
 import Card from "@/components/Card"
 import TypeFilter from "@/components/Category/TypeFilter"
 import LocationSelector from "@/components/FrontLanding/LocationSelector"
-import client from "@/sanity/lib/client"
-import { CardQuery } from "@/sanity/lib/grok"
-import { CARCARD } from "@/types/types"
+import { CAR } from "@/types/types"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
 const Category = () => {
-    const [carDetails, setCarDetails] = useState<CARCARD[]>([]);
-    const [filteredCars, setFilteredCars] = useState<CARCARD[]>([]);
+    const [carDetails, setCarDetails] = useState<CAR[]>([]);
+    const [filteredCars, setFilteredCars] = useState<CAR[]>([]);
 
     useEffect(() => {
-        client.fetch(CardQuery).then((data: CARCARD[]) => { setCarDetails(data); setFilteredCars(data) }).catch((error) => {
-            console.log('No internet! or something else occurred.', error);
-        })
+        const getData = async () => {
+            const raw_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+            const data: CAR[] = await raw_data.json();
+            setCarDetails(data);
+            setFilteredCars(data);
+        };
+        getData();
     }, []);
 
     const setCategory = (types: string[]) => {
-        const filtered = carDetails.filter(car => types.includes(car.car_type));
+        const filtered = carDetails.filter(car => types.includes(car.type));
         setFilteredCars(filtered.length ? filtered : carDetails);
     };
 
@@ -67,16 +69,20 @@ const Category = () => {
                     <div className="flex gap-8 py-6 justify-center flex-wrap">
                         {filteredCars.map((obj, key) => (
                             <Card key={key} data={{
-                                card_type: 'mobile-now',
+                                slug: obj.slug,
                                 name: obj.name,
-                                _id: obj._id,
-                                current_price: obj.current_price,
+                                price_per_day: obj.price_per_day,
                                 image: obj.image,
-                                car_type: obj.car_type,
+                                type: obj.type,
                                 heart: obj.heart,
-                                icons: obj.icons,
-                                old_price: obj.old_price,
-                                slug: obj.slug
+                                original_price: obj.original_price,
+                                available: obj.available,
+                                fuel_capacity: obj.fuel_capacity,
+                                seating_capacity: obj.seating_capacity,
+                                tags: obj.tags,
+                                transmission: obj.transmission,
+                                reviews: obj.reviews,
+                                desc: obj.desc,
                             }} />
                         ))}
                     </div>

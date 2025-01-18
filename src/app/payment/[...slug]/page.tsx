@@ -1,35 +1,20 @@
 import Button from "@/components/Button"
 import buildImg from "@/sanity/lib/buildImg";
-import client from "@/sanity/lib/client";
-import { CarDetailsQuery } from "@/sanity/lib/grok";
-import { DETAILPAGE } from "@/types/types";
+import { CAR } from "@/types/types";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image"
 
 const Payment = async ({ params }: { params: Promise<{ slug: string }> }) => {
-    let details: DETAILPAGE = {
-        name: "",
-        capacity: "",
-        reviews: 0,
-        slug: {
-            current: ""
-        },
-        car_type: "",
-        desc: "",
-        old_price: "",
-        current_price: "",
-        gasoline: "",
-        steering: "",
-        heart: false,
-        image: null,
-        _id: ""
-    }
+    const slug = (await params).slug;
+    let details: CAR = {} as CAR;
 
     try {
-        details = (await client.fetch(CarDetailsQuery((await params).slug)))[0];
+        const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars?slug=${slug}`);
+        details = await data.json();
     } catch (error) {
-        console.log('No internet! or something else occurred.', error);
-    }
+        console.log('No internet! or something else occurred. 1', error);
+    };
+
     return (
         <div className="flex justify-center bg-[#f6f7f9] py-6">
             <div className="w-[95vw] flex gap-6 flex-col-reverse lg:flex-row">
@@ -266,7 +251,7 @@ const Payment = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
                     <div className="flex justify-between text-sm text-[#596780]">
                         <div className="text-[#596780] opacity-50">Subtotel</div>
-                        <div className="font-bold">{details.current_price}</div>
+                        <div className="font-bold">{details.price_per_day}</div>
                     </div>
                     <div className="flex justify-between text-sm text-[#596780]">
                         <div className="text-[#596780] opacity-50">Tax</div>
@@ -283,7 +268,7 @@ const Payment = async ({ params }: { params: Promise<{ slug: string }> }) => {
                         <div className="font-bold">Total Rental Price</div>
                         <div className="flex items-end justify-between">
                             <div className="text-[#596780] opacity-50 text-xs">Overall price and includes rental discount</div>
-                            <div className="font-bold text-3xl">{details.current_price}</div>
+                            <div className="font-bold text-3xl">{details.price_per_day}</div>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-export default {
+const payment = {
     name: 'payment',
     type: 'document',
     title: 'Payment',
@@ -42,3 +42,4 @@ export default {
         },
     ],
 };
+export default payment;

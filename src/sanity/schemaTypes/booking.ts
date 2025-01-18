@@ -1,4 +1,4 @@
-export default {
+const booking = {
     name: 'booking',
     type: 'document',
     title: 'Booking',
@@ -51,3 +51,4 @@ export default {
         },
     ],
 };
+export default booking

@@ -5,54 +5,77 @@ export default defineType({
     title: 'Car',
     type: 'document',
     fields: [
+        // Api Fields
         defineField({
             name: 'name',
             title: 'Name',
             type: 'string',
         }),
         defineField({
-            name: 'current_price',
-            title: 'Current Price',
+            name: 'type',
             type: 'string',
+            title: 'Car Type',
+            description: 'Type of the car (e.g., Sport, Sedan, SUV, etc.)',
+        },),
+        defineField({
+            name: 'fuel_capacity',
+            title: 'Fuel Capacity',
+            type: 'string',
+            description: 'Fuel capacity or battery capacity (e.g., 90L, 100kWh)',
         }),
         defineField({
-            name: 'Available',
-            title: 'Available',
-            type: 'number',
+            name: 'transmission',
+            title: 'Transmission',
+            type: 'string',
+            description: 'Type of transmission (e.g., Manual, Automatic)',
         }),
         defineField({
-            name: 'old_price',
-            title: 'Old Price',
+            name: 'seating_capacity',
+            title: 'Seating Capacity',
             type: 'string',
+            description: 'Number of seats (e.g., 2 People, 4 seats)',
         }),
+        defineField({
+            name: 'price_per_day',
+            title: 'Price Per Day',
+            type: 'string',
+            description: 'Rental price per day',
+        }),
+        defineField({
+            name: 'original_price',
+            title: 'Original Price',
+            type: 'string',
+            description: 'Original price before discount (if applicable)',
+        }),
+        defineField({
+            name: 'image',
+            title: 'Image',
+            type: 'image',
+        }),
+        defineField({
+            name: 'tags',
+            title: 'Tags',
+            type: 'array',
+            of: [{ type: 'string' }],
+            description: 'Tags for categorization (e.g., popular, recommended)',
+        }),
+
+        // Custom Fields
         defineField({
             name: 'heart',
             title: 'Heart',
             type: 'boolean',
         }),
         defineField({
-            name: 'car_type',
-            title: 'Car Type',
-            type: 'string',
-        }),
-        defineField({
-            name: 'icons',
-            title: 'Icons',
-            type: 'boolean',
-        }),
-        defineField({
-            name: 'card_type',
-            title: 'Card Type',
-            type: 'string',
+            name: 'available',
+            title: 'Available',
+            type: 'number',
         }),
         defineField({
             name: 'slug',
-            title: 'Slug',
+            title: 'SLug',
             type: 'slug',
-            options: {
-                source: 'name',
-                maxLength: 96,
-            },
+            options: { source: 'name' }
         }),
 
         // Detail Page Specific Fields
@@ -62,47 +85,9 @@ export default defineType({
             type: 'text',
         }),
         defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'image',
-            options: {
-                hotspot: true,
-            }
-        }),
-        defineField({
-            name: 'capacity',
-            title: 'Capacity',
-            type: 'string',
-        }),
-        defineField({
-            name: 'steering',
-            title: 'Steering',
-            type: 'string',
-        }),
-        defineField({
-            name: 'gasoline',
-            title: 'Gasoline',
-            type: 'string',
-        }),
-        defineField({
             name: 'reviews',
             title: 'Reviews',
             type: 'number',
-        }),
-
-        // Images as an array for the detail page
-        defineField({
-            name: 'images',
-            title: 'Images',
-            type: 'array',
-            of: [
-                {
-                    type: 'image',
-                    options: {
-                        hotspot: true,
-                    },
-                },
-            ],
         }),
     ],
 });

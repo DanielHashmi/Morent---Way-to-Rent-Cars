@@ -1,33 +1,37 @@
-export const CardQuery = `*[_type == 'car']{
-  slug{
-    current
-  },
+export const CardQuery = `*[_type == "car"]{
   name,
-  _id,
-  current_price,
-  old_price,
-  car_type,
-  card_type,
-  icons,
-  heart,
+  type,
+  fuel_capacity,
+  transmission,
+  seating_capacity,
+  price_per_day,
+  original_price,
   image,
-}`;
+  tags,
+  heart,
+  available,
+  desc,
+  reviews,
+  slug,
+}
+`;
 
 export const CarDetailsQuery = (slug: string) => {
   const data = `*[_type == 'car' && slug.current == '${slug}']{
   name,
-  _id,
-  capacity,
-  reviews,
-  slug{current},
-  car_type,
-  desc,
-  old_price,
-  current_price,
-  gasoline,
-  steering,
-  heart,
+  type,
+  fuel_capacity,
+  transmission,
+  seating_capacity,
+  price_per_day,
+  original_price,
   image,
+  tags,
+  heart,
+  available,
+  desc,
+  reviews,
+  slug,
 }`
   return data;
 }

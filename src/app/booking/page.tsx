@@ -18,10 +18,10 @@ const cars = [
     // Add more cars as needed
 ];
 
-const Pending = () => {
+const Booking = () => {
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-center text-2xl text-[#3563e9] font-bold pt-6">Pending Cars</h1>
+            <h1 className="text-center text-2xl text-[#3563e9] font-bold pt-6">Booking Cars</h1>
 
             <div className="flex flex-wrap py-12 items-center justify-center">
                 {cars.map((car) => (
@@ -49,4 +49,4 @@ const Pending = () => {
     );
 };
 
-export default Pending;
+export default Booking;

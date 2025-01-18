@@ -1,19 +1,22 @@
 'use client'
 import Image from "next/image";
-import { useState } from "react";
-import { CARCARD } from "@/types/types";
-import client from "@/sanity/lib/client";
-import { CardQuery } from "@/sanity/lib/grok";
+import { useEffect, useState } from "react";
+import { CAR } from "@/types/types";
 import Card from "../Card";
 
 export default function SearchBar() {
     const [showSearch, setShowSearch] = useState(false);
     const [search, setSearch] = useState('');
-    const [carDetails, setCarDetails] = useState<CARCARD[]>([])
+    const [carDetails, setCarDetails] = useState<CAR[]>([])
 
-    client.fetch(CardQuery).then((data) => setCarDetails(data)).catch((error) => {
-        console.log('No internet! or something else occurred.', error);
-    })
+    useEffect(() => {
+        const getData = async () => {
+            const raw_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+            const data: CAR[] = await raw_data.json();
+            setCarDetails(data);
+        };
+        getData()
+    }, []);
 
     return (
         <div className="flex items-center relative w-full gap-4 lg:max-w-lg md:px-5 md:py-3 md:border rounded-lg md:rounded-full bg-white shadow-sm">
@@ -37,18 +40,22 @@ export default function SearchBar() {
             {/* search place */}
 
             {showSearch && <div className="bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] min-w-[304px] w-min lg:w-[43rem] top-16 z-50 absolute overflow-y-auto">
-                {carDetails.filter((obj) => (obj.name.toLowerCase().includes(search) || obj.car_type.toLowerCase().includes(search))).map((obj, key) => (
+                {carDetails.filter((obj) => (obj.name.toLowerCase().includes(search) || obj.type.toLowerCase().includes(search))).map((obj, key) => (
                     <Card key={key} data={{
-                        card_type: 'mobile',
+                        slug: obj.slug,
                         name: obj.name,
-                        _id: obj._id,
-                        current_price: obj.current_price,
+                        price_per_day: obj.price_per_day,
                         image: obj.image,
-                        car_type: obj.car_type,
+                        type: obj.type,
                         heart: obj.heart,
-                        icons: obj.icons,
-                        old_price: obj.old_price,
-                        slug: obj.slug
+                        original_price: obj.original_price,
+                        available: obj.available,
+                        fuel_capacity: obj.fuel_capacity,
+                        seating_capacity: obj.seating_capacity,
+                        tags: obj.tags,
+                        transmission: obj.transmission,
+                        desc: obj.desc,
+                        reviews: obj.reviews,
                     }} />
                 ))}
                 <div className="text-center w-full text-gray-400 text-nowrap">You caught all for now!</div>

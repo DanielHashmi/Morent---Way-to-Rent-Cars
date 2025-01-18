@@ -1,27 +1,25 @@
-export interface CARCARD {
+export interface CAR {
+    // API Fields
     name: string;
-    current_price: string;
-    old_price: string;
-    image: string | null;
+    type: string;
+    fuel_capacity: string;
+    transmission: string;
+    seating_capacity: string;
+    price_per_day: string;
+    original_price: string;
+    image: {
+        _type: 'image';
+        asset: {
+            _type: 'reference';
+            _ref: string;
+        };
+    };
+    tags: string[];
+
+    // Custom Fields
     heart: boolean;
-    car_type: string;
-    icons: boolean;
-    _id: string;
-    slug?: { current: string },
-    card_type: string;
-}
-export interface DETAILPAGE {
-    name: string;
-    capacity: string;
-    reviews: number;
+    available: number;
     slug: { current: string };
-    car_type: string;
+    reviews: number;
     desc: string;
-    old_price: string;
-    current_price: string;
-    gasoline: string;
-    steering: string;
-    heart: boolean;
-    image: string | null;
-    _id: string;
 }

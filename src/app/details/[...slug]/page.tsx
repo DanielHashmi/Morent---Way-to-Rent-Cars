@@ -4,48 +4,37 @@ import Header from "@/components/Header"
 import IconButton from "@/components/Navbar/IconButton"
 import buildImg from "@/sanity/lib/buildImg";
 import client from "@/sanity/lib/client";
-import { CarDetailsQuery, CardQuery } from "@/sanity/lib/grok";
-import { CARCARD, DETAILPAGE } from "@/types/types";
+import { CardQuery } from "@/sanity/lib/grok";
+import { CAR } from "@/types/types";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image"
 import Link from "next/link";
 
 export async function generateStaticParams() {
     try {
-        const slugs_objs: { slug: { current: string } }[] = await client.fetch("*[_type == 'detail_page']{slug{current}}");
-        return slugs_objs.map((obj) => ({ slug: [obj.slug.current] }))
+        const cars: CAR[] = await client.fetch(CardQuery);
+        return cars.map((car) => ({ slug: [car.slug.current] }))
     } catch (error) {
-        console.log('No internet! or something else occurred.', error);
+        console.log('Failed to generate dynamic routes as static pages!', error);
+        return [];
     }
 };
 
 const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
-    let carDetails: CARCARD[] = [];
-    let details: DETAILPAGE = {
-        name: "",
-        capacity: "",
-        reviews: 0,
-        slug: {
-            current: ""
-        },
-        car_type: "",
-        desc: "",
-        old_price: "",
-        current_price: "",
-        gasoline: "",
-        steering: "",
-        heart: false,
-        image: null,
-        _id: ""
-    };
+    const slug = (await params).slug[0];
+    let carDetails: CAR[] = [];
+
     try {
-        carDetails = await client.fetch(CardQuery);
-        details = (await client.fetch(CarDetailsQuery((await params).slug)))[0];
+        const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+        carDetails = await data.json();
     } catch (error) {
-        console.log('No internet! or something else occurred.', error);
+        console.log('No internet! or something else occurred 3', error);
     }
+
+    const details: CAR = carDetails.find(car => car.slug.current === slug) as CAR;
+
     return (
-        <div className="flex justify-between ">
+        <div className="flex justify-between">
             <div className="min-w-72 border-t hidden xl:flex flex-col p-6 gap-6">
                 <div className="text-xs opacity-50">TYPE</div>
 
@@ -127,12 +116,12 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
                         </div>
                         <div className="flex gap-2 sm:gap-6">
                             <div className="bg-white ring-2 rounded-lg ring-blue-600 p-1 max-h-[116px] w-1/3 min-w-[32%] sm:min-w-28 max-w-[144px]">
-                                <div className={`bg-blue-600 rounded-lg size-full relative`}>
+                                <div className={`rounded-lg size-full relative`}>
                                     {/* Car Image */}
                                     <Image
                                         src={buildImg(details.image as SanityImageSource).width(400).url()}
                                         alt="Car Rental"
-                                        className="object-contain w-40 h-full object-top"
+                                        className="object-contain w-40 h-full rounded-lg "
                                         width={200}
                                         height={200}
 
@@ -179,20 +168,20 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
                             </p>
                             <div className="opacity-50 gap-4 font-thin flex flex-wrap mt-2">
                                 <span>Type Car</span>
-                                <span className="font-bold">{details.car_type}</span>
+                                <span className="font-bold">{details.type}</span>
                                 <span>Capacity</span>
-                                <span className="font-bold">{details.capacity}</span>
+                                <span className="font-bold">{details.seating_capacity}</span>
                                 <span>Steering</span>
-                                <span className="font-bold">{details.steering}</span>
+                                <span className="font-bold">{details.transmission}</span>
                                 <span>Gasoline</span>
-                                <span className="font-bold">{details.gasoline}</span>
+                                <span className="font-bold">{details.fuel_capacity}</span>
                             </div>
 
 
                             <div className='flex justify-between mt-6'>
                                 <div className='flex flex-col'>
-                                    <span className="text-2xl">{details.current_price}/  <span className='text-sm opacity-50'>day</span></span>
-                                    <span className="opacity-50 line-through">{details.old_price} <span className='text-sm opacity-50'>day</span></span>
+                                    <span className="text-2xl">{details.price_per_day}/  <span className='text-sm opacity-50'>day</span></span>
+                                    <span className="opacity-50 line-through">{details.original_price} <span className='text-sm opacity-50'>day</span></span>
                                 </div>
                                 <Link href={`/payment/${details.slug.current}`}>
                                     <Button text='Rent Now' classes='bg-blue-600' />
@@ -257,16 +246,20 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
                         {carDetails.map((obj, key) => (
                             <Card key={key} data={{
-                                card_type: 'mobile-now',
+                                slug: obj.slug,
                                 name: obj.name,
-                                current_price: obj.current_price,
+                                price_per_day: obj.price_per_day,
                                 image: obj.image,
-                                car_type: obj.car_type,
-                                _id: obj._id,
+                                type: obj.type,
                                 heart: obj.heart,
-                                icons: obj.icons,
-                                old_price: obj.old_price,
-                                slug: obj.slug
+                                original_price: obj.original_price,
+                                available: obj.available,
+                                fuel_capacity: obj.fuel_capacity,
+                                seating_capacity: obj.seating_capacity,
+                                tags: obj.tags,
+                                transmission: obj.transmission,
+                                reviews: obj.reviews,
+                                desc: obj.desc,
                             }} />
                         ))}
 
@@ -276,18 +269,22 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
                     <div className="flex gap-8 py-6  max-w-[1308px] flex-wrap">
 
-                        {carDetails.map((obj, key) => (
+                        {carDetails.filter(car => car.tags && car.tags.includes('recommended')).map((obj, key) => (
                             <Card key={key} data={{
-                                card_type: 'mobile-now',
+                                slug: obj.slug,
                                 name: obj.name,
-                                current_price: obj.current_price,
+                                price_per_day: obj.price_per_day,
                                 image: obj.image,
-                                car_type: obj.car_type,
-                                _id: obj._id,
+                                type: obj.type,
                                 heart: obj.heart,
-                                icons: obj.icons,
-                                old_price: obj.old_price,
-                                slug: obj.slug
+                                original_price: obj.original_price,
+                                available: obj.available,
+                                fuel_capacity: obj.fuel_capacity,
+                                seating_capacity: obj.seating_capacity,
+                                tags: obj.tags,
+                                transmission: obj.transmission,
+                                reviews: obj.reviews,
+                                desc: obj.desc,
                             }} />
                         ))}
 

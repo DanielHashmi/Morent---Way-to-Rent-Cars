@@ -10,6 +10,7 @@
 **Flow**: Redirects the user to Google's OAuth authorization endpoint.
 After successful authentication, Google redirects the user back to the NextAuth callback/redirect URL.
 
+
 ## Fetching
 **Endpoint**: /api/cars
 
@@ -29,7 +30,6 @@ After successful authentication, Google redirects the user back to the NextAuth 
 **Flow**: After the form is submitted this endpoint will be executed and initiates booking and saves data inside sanity
 
 
-
 ## Payment
 **Endpoint**: /api/payment
 
@@ -37,8 +37,7 @@ After successful authentication, Google redirects the user back to the NextAuth 
 
 **Purpose**: To make a payment of that Rent
 
-**Flow**: Takes booking ID and make a payment using Stripe and then saves payment data inside sanity
-
+**Flow**: Takes BookingData and make a payment using Stripe and then saves payment data inside sanity returns payment status
 
 
 ## Shipment
