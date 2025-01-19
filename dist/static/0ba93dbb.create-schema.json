@@ -1,0 +1,135 @@
+[
+  {
+    "fields": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "description": "Type of the car (e.g., Sport, Sedan, SUV, etc.)",
+        "name": "type",
+        "type": "string",
+        "title": "Car Type"
+      },
+      {
+        "description": "Fuel capacity or battery capacity (e.g., 90L, 100kWh)",
+        "name": "fuel_capacity",
+        "type": "string"
+      },
+      {
+        "description": "Type of transmission (e.g., Manual, Automatic)",
+        "name": "transmission",
+        "type": "string"
+      },
+      {
+        "description": "Number of seats (e.g., 2 People, 4 seats)",
+        "name": "seating_capacity",
+        "type": "string"
+      },
+      {
+        "description": "Rental price per day",
+        "name": "price_per_day",
+        "type": "string"
+      },
+      {
+        "description": "Original price before discount (if applicable)",
+        "name": "original_price",
+        "type": "string"
+      },
+      {
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "description": "Tags for categorization (e.g., popular, recommended)",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "tags",
+        "type": "array"
+      },
+      {
+        "name": "heart",
+        "type": "boolean"
+      },
+      {
+        "name": "available",
+        "type": "number"
+      },
+      {
+        "options": {
+          "source": "name"
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug",
+        "title": "SLug"
+      },
+      {
+        "name": "desc",
+        "type": "text",
+        "title": "Description"
+      },
+      {
+        "name": "reviews",
+        "type": "number"
+      }
+    ],
+    "name": "car",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "uri",
+                "constraint": {
+                  "options": {
+                    "scheme": [
+                      "/^http$/",
+                      "/^https$/"
+                    ],
+                    "allowRelative": false,
+                    "relativeOnly": false,
+                    "allowCredentials": false
+                  }
+                }
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "image",
+        "type": "url"
+      },
+      {
+        "name": "phone",
+        "type": "string"
+      }
+    ],
+    "name": "user",
+    "type": "document"
+  }
+]
