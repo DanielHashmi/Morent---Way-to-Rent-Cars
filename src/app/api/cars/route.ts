@@ -8,14 +8,28 @@ export const GET = async (req: NextRequest) => {
     const slug = req.nextUrl.searchParams.get("slug");
 
     try {
-        let cars: CAR[] = await client.fetch(CardQuery);
+        const cars: CAR[] = await client.fetch(CardQuery);
 
-        if (limit) cars = cars.slice(0, Number(limit));
-        if (slug) cars = cars.filter(car => car.slug.current === slug);
+        if (slug) {
+            const car = cars.find(car => car.slug.current === slug);
+            return NextResponse.json(car, {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                },
+            });
+        }
+
+        if (limit) {
+            return NextResponse.json(cars.slice(0, Number(limit)), {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                },
+            });
+        }
 
         return NextResponse.json(cars, {
             headers: {
-                "Access-Control-Allow-Origin": "*", 
+                "Access-Control-Allow-Origin": "*",
             },
         });
     } catch (error) {
