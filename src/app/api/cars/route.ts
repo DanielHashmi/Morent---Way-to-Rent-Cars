@@ -8,21 +8,26 @@ export const GET = async (req: NextRequest) => {
     const slug = req.nextUrl.searchParams.get("slug");
 
     try {
-        if (limit) {
-            const cars: CAR[] = await client.fetch(CardQuery);
-            return NextResponse.json(cars.slice(0, Number(limit)));
-        }
-        if (slug) {
-            const cars: CAR[] = await client.fetch(CardQuery);
-            return NextResponse.json(cars.find(car => car.slug.current === slug));
-        }
-        const cars: CAR[] = await client.fetch(CardQuery);
-        return NextResponse.json(cars);
+        let cars: CAR[] = await client.fetch(CardQuery);
+
+        if (limit) cars = cars.slice(0, Number(limit));
+        if (slug) cars = cars.filter(car => car.slug.current === slug);
+
+        return NextResponse.json(cars, {
+            headers: {
+                "Access-Control-Allow-Origin": "*", 
+            },
+        });
     } catch (error) {
-        console.error('No internet or an error occurred.', error);
+        console.error("Error fetching data:", error);
         return NextResponse.json(
-            { error: 'An error occurred while fetching data.' },
-            { status: 500 }
+            { error: "An error occurred while fetching data." },
+            {
+                status: 500,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                },
+            }
         );
     }
 };

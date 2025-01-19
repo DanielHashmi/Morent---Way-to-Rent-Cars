@@ -10,12 +10,7 @@ export default function SearchBar() {
     const [carDetails, setCarDetails] = useState<CAR[]>([])
 
     useEffect(() => {
-        const getData = async () => {
-            const raw_data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
-            const data: CAR[] = await raw_data.json();
-            setCarDetails(data);
-        };
-        getData()
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`).then(data => data.json()).then(data => setCarDetails(data)).catch(error => console.log(error))
     }, []);
 
     return (
