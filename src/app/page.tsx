@@ -1,20 +1,9 @@
-// import FrontLanding from "@/components/FrontLanding/FrontLanding";
+import FrontLanding from "@/components/FrontLanding/FrontLanding";
 
-// export default function Home() {
-//   return (
-//     <main>
-//       <FrontLanding />
-//     </main>
-//   );
-// }
-
-
-import React from 'react'
-
-const page = () => {
+export default function Home() {
   return (
-    <div>page</div>
-  )
+    <main>
+      <FrontLanding />
+    </main>
+  );
 }
-
-export default page
