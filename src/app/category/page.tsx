@@ -9,9 +9,9 @@ import { UsersQuery } from "@/sanity/lib/grok"
 import { CAR, USER } from "@/types/types"
 import Image from "next/image"
 import { useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
-const Category = () => {
+const CategoryComponent = () => {
     const [carDetails, setCarDetails] = useState<CAR[]>([]);
     const [filteredCars, setFilteredCars] = useState<CAR[]>([]);
     const [more, setMore] = useState(6);
@@ -103,6 +103,14 @@ const Category = () => {
 
             </div>
         </div>
+    )
+}
+
+const Category = () => {
+    return (
+        <Suspense>
+            <CategoryComponent />
+        </Suspense>
     )
 }
 
