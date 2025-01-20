@@ -239,7 +239,7 @@ const Payment = async ({ params }: { params: Promise<{ slug: string }> }) => {
                     </div>
 
                     <div className="flex gap-4 items-center">
-                        <Image className="size-28 object-contain rounded-xl" src={buildImg(details.image as SanityImageSource).width(400).url()} alt="car-img" width={100} height={100} />
+                        <Image className="size-28 object-contain rounded-xl" src={details.image ? buildImg(details.image as SanityImageSource).width(400).url() : '/any.png'} alt="car-img" width={100} height={100} />
                         <div className="relative flex flex-col gap-2" >
                             <div className="text-2xl font-bold">{details.name}</div>
                             <div className='text-xs opacity-50 flex gap-2'>

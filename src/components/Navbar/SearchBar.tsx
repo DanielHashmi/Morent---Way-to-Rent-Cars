@@ -40,10 +40,21 @@ export default function SearchBar() {
             .catch(error => console.error(error));
 
         const getUsers = async () => {
-            const users_data = await client.fetch(UsersQuery);
-            setUsers(users_data)
+            let users_data = [];
+            try {
+                users_data = await client.fetch(UsersQuery);
+                setUsers(users_data)
+
+            } catch (error) {
+                console.log(error);
+            }
         };
         getUsers();
+        document.addEventListener('click', (e) => {
+            if (!((e.target as HTMLElement).classList.contains('advanceFilter'))) {
+                setShowAdvanceFilter(false);
+            }
+        })
     }, []);
 
     const handleFilterChange = (filterName: keyof Filters) => {
@@ -53,16 +64,19 @@ export default function SearchBar() {
         }));
     };
 
-    const filteredCars = carDetails.filter((car) => (
-        `${filters.name ? car.name : ''} 
-         ${filters.type ? car.type : ''} 
-         ${filters.price ? car.price_per_day : ''} 
-         ${filters.tags ? car.tags : ''} 
-         ${filters.transmission ? car.transmission : ''} 
-         ${filters.seats ? car.seating_capacity : ''} 
-         ${filters.reviews ? car.reviews : ''}`
-            .toLowerCase().includes(search.toLowerCase())
-    ));
+    let filteredCars: CAR[] = [];
+    if (carDetails.length) {
+        filteredCars = carDetails.filter((car) => (
+            `${filters.name ? car.name : ''} 
+             ${filters.type ? car.type : ''} 
+             ${filters.price ? car.price_per_day : ''} 
+             ${filters.tags ? car.tags : ''} 
+             ${filters.transmission ? car.transmission : ''} 
+             ${filters.seats ? car.seating_capacity : ''} 
+             ${filters.reviews ? car.reviews : ''}`
+                .toLowerCase().includes(search.toLowerCase())
+        ));
+    }
 
     return (
         <div className="flex items-center relative w-full gap-4 lg:max-w-lg md:px-5 md:py-3 md:border rounded-lg md:rounded-full bg-white shadow-sm">
@@ -78,16 +92,14 @@ export default function SearchBar() {
                 />
             </div>
             <button
-                onFocus={() => setShowAdvanceFilter(true)}
-                onBlur={(e) => { setTimeout(() => setShowAdvanceFilter(false), 100) }}
-                className="border md:border-0 p-3 md:p-0 rounded-lg md:rounded-none"
-            >
-                <Image src={'/filter.png'} alt="logo" width={100} height={100} className="size-6" />
+                onClick={() => setShowAdvanceFilter(!showAdvanceFilter)}
+                className="border md:border-0 p-3 md:p-0 rounded-lg md:rounded-none advanceFilter">
+                <Image src={'/filter.png'} alt="logo" width={100} height={100} className="size-6 min-w-6 advanceFilter" />
             </button>
 
             {/* search results */}
             {showSearch && (
-                <div className="bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] min-w-[304px] center w-min lg:w-[43rem] top-16 z-50 absolute overflow-y-auto">
+                <div className={`bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] min-w-[304px] center w-min ${filteredCars.length && 'lg:w-[43rem]'} top-16 z-50 absolute overflow-y-auto`}>
                     {filteredCars.map((car, index) => (
                         <Card
                             key={index}
@@ -115,17 +127,13 @@ export default function SearchBar() {
 
             {/* advance filters */}
             {showAdvanceFilter && (
-                <div className="bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-w-sm max-h-[27rem] top-16 z-50 absolute overflow-y-auto">
+                <div className="bg-[#f6f7f9] p-6 flex advanceFilter flex-wrap gap-6 shadow-xl rounded-xl max-w-sm max-h-[27rem] top-16 z-50 absolute overflow-y-auto">
                     {Object.keys(filters).map((filter) => (
                         <div
                             key={filter}
-                            onClick={(e) => {
-                                console.log(filter)
-                                    ; handleFilterChange(filter as keyof Filters)
-                            }}
-                            className="flex gap-2 cursor-pointer"
-                        >
-                            <input type="checkbox" className="cursor-pointer" checked={filters[filter as keyof Filters]} readOnly />
+                            onClick={(e) => handleFilterChange(filter as keyof Filters)}
+                            className="advanceFilter flex gap-2 cursor-pointer">
+                            <input type="checkbox" className="cursor-pointer advanceFilter" checked={filters[filter as keyof Filters]} readOnly />
                             {filter.charAt(0).toUpperCase() + filter.slice(1)}
                         </div>
                     ))}

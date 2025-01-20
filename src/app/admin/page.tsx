@@ -286,7 +286,7 @@ const Category = () => {
                                 </div>
 
                                 <div className="">
-                                    <Image className="object-cover w-ful" src={'/graphs.png'} alt="car-img" width={500} height={500} />
+                                    <Image className="object-cover w-full" src={'/graphs.png'} alt="car-img" width={500} height={500} />
                                 </div>
                             </div>
                         </div>

@@ -5,7 +5,7 @@ import IconButton from "@/components/Navbar/IconButton"
 import buildImg from "@/sanity/lib/buildImg";
 import client from "@/sanity/lib/client";
 import { CardQuery, UsersQuery } from "@/sanity/lib/grok";
-import { CAR } from "@/types/types";
+import { CAR, USER } from "@/types/types";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image"
 import Link from "next/link";
@@ -23,16 +23,18 @@ export async function generateStaticParams() {
 const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const slug = (await params).slug[0];
     let carDetails: CAR[] = [];
-
+    let users: USER[] = [];
     try {
         const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
         carDetails = await data.json();
+        users = await client.fetch(UsersQuery);
     } catch (error) {
         console.log('No internet! or something else occurred 3', error);
     }
-
+    if (!carDetails.length) {
+        return <div className="flex items-center justify-center text-center text-xs opacity-50 h-[388px] min-w-[304px] rounded-lg bg-white animate-pulse">Please wait or check you connection!</div>
+    }
     const details: CAR = carDetails.find(car => car.slug.current === slug) as CAR;
-    const users = await client.fetch(UsersQuery);
 
     return (
         <div className="flex justify-between">

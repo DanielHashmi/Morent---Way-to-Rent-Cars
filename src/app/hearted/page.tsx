@@ -8,17 +8,15 @@ import { authOption } from "../api/auth/[...nextauth]/authOptions";
 const Hearted = async () => {
   const session = await getServerSession(authOption)
   let carDetails: CAR[] = [];
-  const users: USER[] = await client.fetch(UsersQuery);
-  const user = users.find(user => user.email === session?.user?.email);
-
+  let users: USER[] = []
+  let user: USER | undefined = undefined;
   try {
+    users = await client.fetch(UsersQuery);
+    user = users.find(user => user.email === session?.user?.email);
     const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
     carDetails = (await data.json()).filter((car: CAR) => user?.favorites.includes(car.slug.current));
   } catch (error) {
     console.log('No internet! or something else occurred 2.', error);
-  }
-  if (!carDetails) {
-    return
   }
   return (
     <div className="flex flex-col items-center bg-[#f6f7f9]">
