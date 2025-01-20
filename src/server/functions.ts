@@ -29,9 +29,9 @@ export async function toggleHeart(slug: string, email: string): Promise<void> {
 
             console.log(`Favorites updated for user ID: ${userDocument._id}`);
         } else {
-            console.error(`User with email ${email} not found.`);
+            console.log(`User with email ${email} not found.`);
         }
     } catch (error) {
-        console.error("Error toggling favorite:", error);
+        console.log("Error toggling favorite:", error);
     }
 }

@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest) => {
             },
         });
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log("Error fetching data:", error);
         return NextResponse.json(
             { error: "An error occurred while fetching data." },
             {

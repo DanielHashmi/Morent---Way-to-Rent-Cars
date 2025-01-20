@@ -37,7 +37,7 @@ export default function SearchBar() {
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`)
             .then(response => response.json())
             .then(data => setCarDetails(data))
-            .catch(error => console.error(error));
+            .catch(error => console.log(error));
 
         const getUsers = async () => {
             let users_data = [];

@@ -27,18 +27,18 @@ const CategoryComponent = () => {
                 data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
                 data = await data.json();
                 users = await client.fetch(UsersQuery);
+                setCarDetails(data);
+                setFilteredCars(data);
+                setUsers(users)
             } catch (error) {
                 console.log(error);
             }
-            setCarDetails(data);
-            setFilteredCars(data);
-            setUsers(users)
         };
         getData();
     }, []);
 
     const setCategory = (types: string[]) => {
-        const filtered = carDetails.length ? carDetails.filter(car => (types.includes(car.type) || types.includes(car.seating_capacity))) : [];
+        const filtered = carDetails.filter(car => (types.includes(car.type) || types.includes(car.seating_capacity)));
         setFilteredCars(filtered.length ? filtered : carDetails);
     };
 
@@ -47,11 +47,11 @@ const CategoryComponent = () => {
             <div className="min-w-72 border-t hidden lg:flex flex-col p-6 gap-6">
                 <div className="text-xs opacity-50">TYPE</div>
 
-                <TypeFilter carDetails={carDetails.length ? carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag)) : []} setCategory={setCategory} />
+                <TypeFilter carDetails={carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag))} setCategory={setCategory} />
 
                 <div className="text-xs opacity-50">CAPACITY</div>
 
-                <CapacityFilter carDetails={carDetails.length ? carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag)) : []} setCategory={setCategory} />
+                <CapacityFilter carDetails={carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag))} setCategory={setCategory} />
 
                 <div className="text-xs opacity-50">PRICE</div>
 
@@ -68,7 +68,7 @@ const CategoryComponent = () => {
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
                     <div className="flex gap-8 py-6 justify-center flex-wrap">
                         {
-                            filteredCars.length && filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).length ?
+                            filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).length ?
                                 filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).map((obj, key) => (
                                     <Card key={key} data={{
                                         slug: obj.slug,
@@ -97,7 +97,7 @@ const CategoryComponent = () => {
                         <button onClick={() => setMore(more + 3)}>
                             <Button text='Show more car' classes='bg-blue-600' />
                         </button>
-                        <div className="text-sm opacity-50 absolute right-0">{carDetails.length && carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).length || 0} cars</div>
+                        <div className="text-sm opacity-50 absolute right-0">{carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).length || 0} cars</div>
                     </div>
                 </div>
 
