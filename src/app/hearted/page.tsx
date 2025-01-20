@@ -1,11 +1,19 @@
 import Card from "@/components/Card";
-import { CAR } from "@/types/types";
+import client from "@/sanity/lib/client";
+import { UsersQuery } from "@/sanity/lib/grok";
+import { CAR, USER } from "@/types/types";
+import { getServerSession } from "next-auth";
+import { authOption } from "../api/auth/[...nextauth]/authOptions";
 
 const Hearted = async () => {
+  const session = await getServerSession(authOption)
   let carDetails: CAR[] = [];
+  const users: USER[] = await client.fetch(UsersQuery);
+  const user = users.find(user => user.email === session?.user?.email);
+
   try {
-    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`)
-    carDetails = (await data.json()).filter((car: CAR) => car.heart);
+    const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+    carDetails = (await data.json()).filter((car: CAR) => user?.favorites.includes(car.slug.current));
   } catch (error) {
     console.log('No internet! or something else occurred 2.', error);
   }
@@ -33,7 +41,7 @@ const Hearted = async () => {
             transmission: obj.transmission,
             reviews: obj.reviews,
             desc: obj.desc
-          }} />
+          }} users={users} />
         ))}
       </div>
     </div>

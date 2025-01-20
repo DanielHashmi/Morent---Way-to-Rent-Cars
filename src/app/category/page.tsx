@@ -1,16 +1,23 @@
 'use client'
 import Button from "@/components/Button"
 import Card from "@/components/Card"
+import CapacityFilter from "@/components/Category/CapacityFilter"
 import TypeFilter from "@/components/Category/TypeFilter"
 import LocationSelector from "@/components/FrontLanding/LocationSelector"
-import { CAR } from "@/types/types"
+import client from "@/sanity/lib/client"
+import { UsersQuery } from "@/sanity/lib/grok"
+import { CAR, USER } from "@/types/types"
 import Image from "next/image"
-import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 const Category = () => {
     const [carDetails, setCarDetails] = useState<CAR[]>([]);
     const [filteredCars, setFilteredCars] = useState<CAR[]>([]);
+    const [more, setMore] = useState(6);
+    const searchParams = useSearchParams();
+    const tag = searchParams.get('tag') || ' ';
+    const [users, setUsers] = useState<USER[]>([])
 
     useEffect(() => {
         const getData = async () => {
@@ -20,38 +27,28 @@ const Category = () => {
             setFilteredCars(data);
         };
         getData();
+        const getUsers = async () => {
+            const users_data = await client.fetch(UsersQuery);
+            setUsers(users_data)
+        };
+        getUsers();
     }, []);
 
     const setCategory = (types: string[]) => {
-        const filtered = carDetails.filter(car => types.includes(car.type));
+        const filtered = carDetails.filter(car => (types.includes(car.type) || types.includes(car.seating_capacity)));
         setFilteredCars(filtered.length ? filtered : carDetails);
     };
 
     return (
-        <div className="flex justify-between ">
+        <div className="flex justify-between">
             <div className="min-w-72 border-t hidden lg:flex flex-col p-6 gap-6">
                 <div className="text-xs opacity-50">TYPE</div>
 
-                <TypeFilter carDetails={carDetails} setCategory={setCategory} />
+                <TypeFilter carDetails={carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag))} setCategory={setCategory} />
 
                 <div className="text-xs opacity-50">CAPACITY</div>
 
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    2 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    4 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    6 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    8 Person <span className="opacity-50">(12)</span>
-                </div>
+                <CapacityFilter carDetails={carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag))} setCategory={setCategory} />
 
                 <div className="text-xs opacity-50">PRICE</div>
 
@@ -67,7 +64,7 @@ const Category = () => {
 
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
                     <div className="flex gap-8 py-6 justify-center flex-wrap">
-                        {filteredCars.map((obj, key) => (
+                        {filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).map((obj, key) => (
                             <Card key={key} data={{
                                 slug: obj.slug,
                                 name: obj.name,
@@ -83,7 +80,7 @@ const Category = () => {
                                 transmission: obj.transmission,
                                 reviews: obj.reviews,
                                 desc: obj.desc,
-                            }} />
+                            }} users={users} />
                         ))}
                     </div>
                 </div>
@@ -91,10 +88,10 @@ const Category = () => {
 
                 <div className="flex justify-center mt-12">
                     <div className="flex w-full justify-center relative max-w-[1308px]">
-                        <Link href={'/category'}>
+                        <button onClick={() => setMore(more + 3)}>
                             <Button text='Show more car' classes='bg-blue-600' />
-                        </Link>
-                        <div className="text-sm opacity-50 absolute right-0">{carDetails.length} cars</div>
+                        </button>
+                        <div className="text-sm opacity-50 absolute right-0">{carDetails.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).length} cars</div>
                     </div>
                 </div>
 

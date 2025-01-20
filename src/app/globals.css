@@ -11,3 +11,9 @@
     background-color: rgb(215, 215, 215);
 }
 
+.center {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  

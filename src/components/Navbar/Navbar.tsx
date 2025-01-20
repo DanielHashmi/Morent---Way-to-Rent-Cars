@@ -18,29 +18,35 @@ const Navbar = () => {
 
         {path === 'category' && <div className="flex justify-between w-full md:w-fit">
           <Image src={'/menu.svg'} alt="menu-icon" width={100} height={100} className="size-8" />
-          <div className="block md:hidden">
+          <button
+            onFocus={() => { setShowProfile(true) }}
+            onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
+            className="block md:hidden">
             <IconButton icon="/user.png" redDot={false} />
-          </div>
+          </button>
         </div>}
 
         <div className="flex justify-between w-full md:w-fit">
           <Link href={'/'}><Image src={'/logo.svg'} alt="logo" width={200} height={200} /></Link>
-          <div className="block md:hidden">
+          <button
+            onFocus={() => { setShowProfile(true) }}
+            onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
+            className="block md:hidden">
             {path !== 'category' && <IconButton icon="/user.png" redDot={false} />}
-          </div>
+          </button>
         </div>
         <SearchBar />
       </div>
-      <div className="gap-5 hidden md:flex relative">
-        <Link href={'/hearted'} className="lg:block hidden">
+      <div className="gap-5 flex relative">
+        <Link href={'/hearted'} className="md:block hidden">
           <IconButton icon="/like.png" redDot={false} />
         </Link>
 
-        <div className="lg:block hidden">
+        <div className="md:block hidden">
           <IconButton icon="/bell.png" redDot />
         </div>
 
-        <div className="lg:block hidden">
+        <div className="md:block hidden">
           <IconButton icon="/setting.png" redDot={false} />
         </div>
 
@@ -51,10 +57,11 @@ const Navbar = () => {
           <IconButton icon={session?.user?.image || "/user.png"} redDot={false} />
         </button>
 
-        {/* popup div */}
-        {showProfile && <div className="bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] top-16 right-0 z-50 absolute overflow-y-auto">
+        {/* popup profile */}
+        {showProfile && <div className={`bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] ${path.includes('category') && '-top-12'} md:top-16 right-0 z-50 absolute overflow-y-auto`}>
+          <div className="text-sm opacity-50">{session?.user?.email}</div>
           <button onClick={() => signOut()} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Logout</button>
-          <Link href={'/pending'} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Pending Cars</Link>
+          <Link href={'/booking'} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Bookings</Link>
         </div>}
       </div>
     </div>

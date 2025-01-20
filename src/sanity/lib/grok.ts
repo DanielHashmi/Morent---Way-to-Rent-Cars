@@ -35,3 +35,5 @@ export const CarDetailsQuery = (slug: string) => {
 }`
   return data;
 }
+
+export const UsersQuery = `*[_type == 'user']{name,email,image,favorites,role,notifications}`;

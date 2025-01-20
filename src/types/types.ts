@@ -1,3 +1,12 @@
+interface SanityImage {
+    _type: 'image';
+    asset: {
+        _type: 'reference';
+        _ref: string;
+    };
+}
+
+
 export interface CAR {
     // API Fields
     name: string;
@@ -7,13 +16,7 @@ export interface CAR {
     seating_capacity: string;
     price_per_day: string;
     original_price: string;
-    image: {
-        _type: 'image';
-        asset: {
-            _type: 'reference';
-            _ref: string;
-        };
-    };
+    image: SanityImage;
     tags: string[];
 
     // Custom Fields
@@ -22,4 +25,13 @@ export interface CAR {
     slug: { current: string };
     reviews: number;
     desc: string;
+}
+
+export interface USER {
+    name: string;
+    email: string;
+    image?: SanityImage;
+    favorites: string[];
+    role: string;
+    notifications: string[];
 }

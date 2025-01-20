@@ -1,24 +1,37 @@
 import client from "@/sanity/lib/client";
 
-export async function toggleHeart(slug: string): Promise<void> {
+export async function toggleHeart(slug: string, email: string): Promise<void> {
     try {
-        // Fetch the document based on the slug
-        const query = `*[_type == "car" && slug.current == $slug][0]`;
-        const document = await client.fetch(query, { slug });
+        // Fetch the user document based on the email
+        const userQuery = `*[_type == "user" && email == $email][0]`;
+        const userDocument = await client.fetch(userQuery, { email });
 
-        if (document) {
-            // Toggle the heart field
-            const updatedHeart = !document.heart;
+        if (userDocument) {
+            const currentFavorites = userDocument.favorites || [];
+            const slugIndex = currentFavorites.indexOf(slug);
+
+            let updatedFavorites;
+            if (slugIndex === -1) {
+                // Add the slug if it's not already in favorites
+                updatedFavorites = [...currentFavorites, slug];
+                console.log(`Slug ${slug} added to favorites.`);
+            } else {
+                // Remove the slug if it already exists (toggle behavior)
+                updatedFavorites = currentFavorites.filter((fav: string) => fav !== slug);
+                console.log(`Slug ${slug} removed from favorites.`);
+            }
+
+            // Patch the user document with the updated favorites
             await client
-                .patch(document._id) // Use the document's `_id` for the patch
-                .set({ heart: updatedHeart })
+                .patch(userDocument._id)
+                .set({ favorites: updatedFavorites })
                 .commit();
 
-            console.log(`Heart toggled to ${updatedHeart} for document ID: ${document._id}`);
+            console.log(`Favorites updated for user ID: ${userDocument._id}`);
         } else {
-            console.error(`Document with slug ${slug} not found.`);
+            console.error(`User with email ${email} not found.`);
         }
     } catch (error) {
-        console.error("Error toggling heart:", error);
+        console.error("Error toggling favorite:", error);
     }
 }

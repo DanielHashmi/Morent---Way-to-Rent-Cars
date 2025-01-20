@@ -5,10 +5,14 @@ import LocationSelector from "./LocationSelector"
 import Header from "../Header"
 import Button from "../Button"
 import Link from "next/link"
+import client from "@/sanity/lib/client"
+import { UsersQuery } from "@/sanity/lib/grok"
 
 const FrontLanding = async () => {
     const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
     const carDetails: CAR[] = await data.json();
+
+    const users = await client.fetch(UsersQuery);
 
     return (
         <div className="md:px-16 px-6 py-8 bg-[#f6f7f9]">
@@ -27,7 +31,7 @@ const FrontLanding = async () => {
             </div>
 
             <LocationSelector currentPage="home" />
-            <Header showViewAll text="Popular Car" />
+            <Header showViewAll tag="popular" text="Popular Car" />
 
 
             <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
@@ -48,11 +52,11 @@ const FrontLanding = async () => {
                             transmission: obj.transmission,
                             reviews: obj.reviews,
                             desc: obj.desc,
-                        }} />
+                        }} users={users} />
                     ))}
                 </div>
             </div>
-            <Header showViewAll={false} text="Recommendation Car" />
+            <Header showViewAll={false} tag="recommended" text="Recommendation Car" />
 
             <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
                 <div className="flex gap-8 py-6 xl:w-[82rem] flex-wrap">
@@ -72,7 +76,7 @@ const FrontLanding = async () => {
                             transmission: obj.transmission,
                             reviews: obj.reviews,
                             desc: obj.desc,
-                        }} />
+                        }} users={users} />
                     ))}
                 </div>
             </div>

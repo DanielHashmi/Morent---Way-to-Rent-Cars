@@ -25,5 +25,23 @@ export default defineType({
             title: 'Phone',
             type: 'string',
         }),
+        defineField({
+            name: 'role',
+            title: 'Role',
+            type: 'string',
+            options: { 'list': ['Admin', 'User'] },
+        }),
+        defineField({
+            name: 'notification',
+            title: 'Notification',
+            type: 'array',
+            of: [{ type: 'string' }],
+        }),
+        defineField({
+            name: 'favorites',
+            title: 'Favorites',
+            type: 'array',
+            of: [{ type: 'string' }],
+        }),
     ],
 });

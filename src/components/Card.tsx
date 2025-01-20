@@ -1,21 +1,32 @@
 'use client'
-import { CAR } from '@/types/types'
+import { CAR, USER } from '@/types/types'
 import Image from 'next/image'
 import Button from './Button'
 import buildImg from '@/sanity/lib/buildImg'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import Link from 'next/link'
 import { toggleHeart } from '@/server/functions'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 
-const Card = ({ data }: { data: CAR }) => {
-    const [heart, setHeart] = useState(data.heart);
+const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
+    const { data: session } = useSession();
+    const [heart, setHeart] = useState(false);
+
+    useEffect(() => {
+        if (users.some(user => user.favorites)) {
+            const isHearted = users.find(user => user.email === session?.user?.email)?.favorites.includes(data.slug.current)
+            if (isHearted) setHeart(isHearted);
+        }
+    }, [session])
+
+
     return <div className="font-bold flex flex-col h-[388px] min-w-[304px] gap-3 rounded-lg p-6 bg-white relative">
         <div className="flex flex-col items-start bg-white rounded-lg mb-2">
             <div className="text-lg">{data.name}</div>
             <div className='text-xs opacity-30'>{data.type}</div>
         </div>
-        <button onClick={() => { toggleHeart(data.slug.current); setHeart(!heart) }} className="absolute right-2 top-2">
+        <button onClick={() => { toggleHeart(data.slug.current, session?.user?.email || ''); setHeart(!heart) }} className="absolute right-2 top-2">
             <Image className="w-8 h-8 rounded-full bg-white p-1" src={heart ? '/heart.svg' : '/heartBorder.svg'} alt="heart-icon" width={32} height={32} />
         </button>
         <div className="relative h-48 mb-4">

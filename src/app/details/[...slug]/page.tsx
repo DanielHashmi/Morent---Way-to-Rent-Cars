@@ -4,7 +4,7 @@ import Header from "@/components/Header"
 import IconButton from "@/components/Navbar/IconButton"
 import buildImg from "@/sanity/lib/buildImg";
 import client from "@/sanity/lib/client";
-import { CardQuery } from "@/sanity/lib/grok";
+import { CardQuery, UsersQuery } from "@/sanity/lib/grok";
 import { CAR } from "@/types/types";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image"
@@ -32,6 +32,7 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
     }
 
     const details: CAR = carDetails.find(car => car.slug.current === slug) as CAR;
+    const users = await client.fetch(UsersQuery);
 
     return (
         <div className="flex justify-between">
@@ -240,36 +241,40 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
                     </div>
                 </div>
-                <Header showViewAll text="Recent Car" />
+                <Header showViewAll tag="recent" text="Recent Car" />
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
-                    <div className="flex gap-8 py-6  max-w-[1308px] flex-wrap">
+                    <div className="flex gap-8 py-6 w-full max-w-[1308px] flex-wrap">
 
-                        {carDetails.map((obj, key) => (
-                            <Card key={key} data={{
-                                slug: obj.slug,
-                                name: obj.name,
-                                price_per_day: obj.price_per_day,
-                                image: obj.image,
-                                type: obj.type,
-                                heart: obj.heart,
-                                original_price: obj.original_price,
-                                available: obj.available,
-                                fuel_capacity: obj.fuel_capacity,
-                                seating_capacity: obj.seating_capacity,
-                                tags: obj.tags,
-                                transmission: obj.transmission,
-                                reviews: obj.reviews,
-                                desc: obj.desc,
-                            }} />
-                        ))}
+                        {
+                            carDetails.filter(car => car.tags && car.tags.includes('recent')).length ?
+                                carDetails.filter(car => car.tags && car.tags.includes('recent')).slice(0, 6).map((obj, key) => (
+                                    <Card key={key} data={{
+                                        slug: obj.slug,
+                                        name: obj.name,
+                                        price_per_day: obj.price_per_day,
+                                        image: obj.image,
+                                        type: obj.type,
+                                        heart: obj.heart,
+                                        original_price: obj.original_price,
+                                        available: obj.available,
+                                        fuel_capacity: obj.fuel_capacity,
+                                        seating_capacity: obj.seating_capacity,
+                                        tags: obj.tags,
+                                        transmission: obj.transmission,
+                                        reviews: obj.reviews,
+                                        desc: obj.desc,
+                                    }} users={users} />
+                                ))
+                                : <div className="text-xs opacity-50 text-center">No Recent Cars Available</div>
+                        }
 
                     </div>
                 </div>
-                <Header showViewAll text="Recommendation Car" />
+                <Header showViewAll tag="recommended" text="Recommendation Car" />
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
                     <div className="flex gap-8 py-6  max-w-[1308px] flex-wrap">
 
-                        {carDetails.filter(car => car.tags && car.tags.includes('recommended')).map((obj, key) => (
+                        {carDetails.filter(car => car.tags && car.tags.includes('recommended')).slice(0, 6).map((obj, key) => (
                             <Card key={key} data={{
                                 slug: obj.slug,
                                 name: obj.name,
@@ -285,7 +290,7 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
                                 transmission: obj.transmission,
                                 reviews: obj.reviews,
                                 desc: obj.desc,
-                            }} />
+                            }} users={users} />
                         ))}
 
                     </div>
