@@ -36,6 +36,16 @@ export default defineType({
             type: 'string',
         }),
         defineField({
+            name: 'icons',
+            title: 'Icons',
+            type: 'boolean',
+        }),
+        defineField({
+            name: 'card_type',
+            title: 'Card Type',
+            type: 'string',
+        }),
+        defineField({
             name: 'slug',
             title: 'Slug',
             type: 'slug',

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CAR } from "@/types/types";
 import Card from "../Card";
+import client from "@/sanity/lib/client";
+import { UsersQuery } from "@/sanity/lib/grok";
 
 type Filters = {
     name: boolean;
@@ -19,7 +21,7 @@ export default function SearchBar() {
     const [search, setSearch] = useState<string>('');
     const [carDetails, setCarDetails] = useState<CAR[]>([]);
     const [showAdvanceFilter, setShowAdvanceFilter] = useState<boolean>(false);
-
+    const [users, setUsers] = useState([])
     const [filters, setFilters] = useState<Filters>({
         name: true,
         type: true,
@@ -36,6 +38,12 @@ export default function SearchBar() {
             .then(response => response.json())
             .then(data => setCarDetails(data))
             .catch(error => console.error(error));
+
+        const getUsers = async () => {
+            const users_data = await client.fetch(UsersQuery);
+            setUsers(users_data)
+        };
+        getUsers();
     }, []);
 
     const handleFilterChange = (filterName: keyof Filters) => {
@@ -98,7 +106,7 @@ export default function SearchBar() {
                                 transmission: car.transmission,
                                 desc: car.desc,
                                 reviews: car.reviews,
-                            }}
+                            }} users={users}
                         />
                     ))}
                     <div className="text-center w-full text-gray-400 text-nowrap">You caught all for now!</div>
