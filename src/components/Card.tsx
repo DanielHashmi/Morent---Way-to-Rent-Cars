@@ -18,7 +18,7 @@ const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
             const isHearted = users.find(user => user.email === session?.user?.email)?.favorites.includes(data.slug.current)
             if (isHearted) setHeart(isHearted);
         }
-    }, [session])
+    }, [data.slug, users, session])
 
 
     return <div className="font-bold flex flex-col h-[388px] min-w-[304px] gap-3 rounded-lg p-6 bg-white relative">

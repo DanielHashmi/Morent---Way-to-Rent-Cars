@@ -131,7 +131,7 @@ export default function SearchBar() {
                     {Object.keys(filters).map((filter) => (
                         <div
                             key={filter}
-                            onClick={(e) => handleFilterChange(filter as keyof Filters)}
+                            onClick={() => handleFilterChange(filter as keyof Filters)}
                             className="advanceFilter flex gap-2 cursor-pointer">
                             <input type="checkbox" className="cursor-pointer advanceFilter" checked={filters[filter as keyof Filters]} readOnly />
                             {filter.charAt(0).toUpperCase() + filter.slice(1)}
