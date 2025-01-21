@@ -215,7 +215,7 @@ const Payment = async ({ params }: { params: Promise<{ slug: string }> }) => {
                             </div>
                         </div>
                         <button>
-                            <Button classes="bg-blue-600" text="Rent Now" />
+                            <Button classes="bg-blue-600" text="Book Now" />
                         </button>
 
 

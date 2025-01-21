@@ -22,7 +22,7 @@ const CapacityFilter = ({ carDetails, setCategory }: { carDetails: CAR[]; setCat
         setTypes(updatedTypes);
         setCategory(updatedTypes);
     };
-    carDetails.map(car => console.log(car.seating_capacity))
+    
     return (
         <div className="lg:flex flex-col gap-6">
             {
