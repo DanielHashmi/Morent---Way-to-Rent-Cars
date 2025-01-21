@@ -15,7 +15,7 @@ const Navbar = ({ disallowedPages }: { disallowedPages: string[] }) => {
 
   if (!disallowedPages.some(page => pathname.startsWith(page))) {
     return (
-      <div className="md:h-[124px] flex justify-between items-center md:px-16 p-6 gap-6">
+      <div className="md:h-[124px] flex justify-between items-center md:px-16 p-6 gap-6 relative">
         <div className="flex gap-11 flex-col md:flex-row w-full items-center">
 
           {path === 'category' && <div className="flex justify-between w-full md:w-fit">
@@ -34,12 +34,12 @@ const Navbar = ({ disallowedPages }: { disallowedPages: string[] }) => {
               onFocus={() => { setShowProfile(true) }}
               onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
               className="block md:hidden">
-              {path !== 'category' && <IconButton icon="/user.png" redDot={false} />}
+              {path !== 'category' && <IconButton icon={session?.user?.image || "/user.png"} redDot={false} />}
             </button>
           </div>
           <SearchBar />
         </div>
-        <div className="gap-5 flex relative">
+        <div className="gap-5 flex absolute md:relative">
           <Link href={'/hearted'} className="md:block hidden">
             <IconButton icon="/like.png" redDot={false} />
           </Link>
@@ -60,8 +60,20 @@ const Navbar = ({ disallowedPages }: { disallowedPages: string[] }) => {
           </button>
 
           {/* popup profile */}
-          {showProfile && <div className={`bg-[#f6f7f9] p-6 flex flex-wrap gap-6 shadow-xl rounded-xl max-h-[27rem] ${path.includes('category') && '-top-12'} md:top-16 right-0 z-50 absolute overflow-y-auto`}>
+          {showProfile && <div className={`bg-[#f6f7f9] p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl max-h-[27rem] ${path.includes('category') && '-top-12'} md:top-16 z-50 absolute overflow-y-auto`}>
             <div className="text-sm opacity-50">{session?.user?.email}</div>
+
+            <Link href={'/hearted'} className="md:hidden block">
+              <IconButton icon="/like.png" redDot={false} />
+            </Link>
+
+            <div className="md:hidden block">
+              <IconButton icon="/bell.png" redDot />
+            </div>
+            <div className="md:hidden block">
+              <IconButton icon="/setting.png" redDot={false} />
+            </div>
+
             <button onClick={() => signOut()} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Logout</button>
             <Link href={'/booking'} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Bookings</Link>
           </div>}
