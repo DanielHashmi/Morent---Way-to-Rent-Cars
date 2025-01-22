@@ -7,7 +7,7 @@ import { authOption } from "../api/auth/[...nextauth]/authOptions";
 
 const Hearted = async () => {
   const session = await getServerSession(authOption)
-  let carDetails: CAR[] = [];
+  const carDetails: CAR[] = [];
   let users: USER[] = []
   let user: USER | undefined = undefined;
   try {
