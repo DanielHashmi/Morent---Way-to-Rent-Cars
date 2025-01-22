@@ -1,25 +1,25 @@
-import { CAR, USER } from "@/types/types"
-import Card from "../Card"
+// import { CAR, USER } from "@/types/types"
+// import Card from "../Card"
 import CarCard from "./CarCard"
 import LocationSelector from "./LocationSelector"
 import Header from "../Header"
 import Button from "../Button"
 import Link from "next/link"
-import client from "@/sanity/lib/client"
-import { UsersQuery } from "@/sanity/lib/grok"
+// import client from "@/sanity/lib/client"
+// import { UsersQuery } from "@/sanity/lib/grok"
 
 const FrontLanding = async () => {
-    let data;
-    let carDetails: CAR[] = [];
-    let users: USER[] = [];
-    try {
-        data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
-        carDetails = await data.json();
-        users = await client.fetch(UsersQuery);
-    } catch (error) {
-        console.log(error);
-    }
-    if (!carDetails.includes) return <div>Loading...</div>
+    // let data;
+    // let carDetails: CAR[] = [];
+    // let users: USER[] = [];
+    // try {
+    //     data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
+    //     carDetails = await data.json();
+    //     users = await client.fetch(UsersQuery);
+    // } catch (error) {
+    //     console.log(error);
+    // }
+    // if (!carDetails.includes) return <div>Loading...</div>
     return (
         <div className="md:px-16 px-6 py-8 bg-[#f6f7f9]">
             <div className="flex gap-6 justify-center">
@@ -40,7 +40,7 @@ const FrontLanding = async () => {
             <Header showViewAll tag="popular" text="Popular Car" />
 
 
-            <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
+            {/* <div className="flex justify-start 2xl:justify-center mt-12 overflow-hidden">
                 <div className="flex gap-8 py-6  xl:w-[82rem] overflow-x-scroll">
                     {
                         carDetails.length && carDetails.filter(car => car.tags && car.tags.includes('popular')).length ?
@@ -91,7 +91,7 @@ const FrontLanding = async () => {
                             )) : <div className="flex items-center justify-center text-center text-xs opacity-50 h-[388px] min-w-[304px] rounded-lg bg-white animate-pulse">Please wait or check you connection!</div>
                     }
                 </div>
-            </div>
+            </div> */}
 
 
             <div className="flex justify-center mt-12">
@@ -99,7 +99,7 @@ const FrontLanding = async () => {
                     <Link href={'/category'}>
                         <Button text='Show more car' classes='bg-blue-600' />
                     </Link>
-                    <div className="text-sm opacity-50 absolute right-0">{carDetails.length || 0} cars</div>
+                    {/* <div className="text-sm opacity-50 absolute right-0">{carDetails.length || 0} cars</div> */}
                 </div>
             </div>
 
