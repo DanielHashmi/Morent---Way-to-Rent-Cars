@@ -15,7 +15,7 @@ const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
 
     useEffect(() => {
         if (users.some(user => user.favorites)) {
-            const isHearted = users.find(user => user.email === session?.user?.email)?.favorites.includes(data.slug.current)
+            const isHearted = users.find(user => user.email === session?.user?.email)?.favorites?.includes(data.slug.current)
             if (isHearted) setHeart(isHearted);
         }
     }, [data.slug, users, session])

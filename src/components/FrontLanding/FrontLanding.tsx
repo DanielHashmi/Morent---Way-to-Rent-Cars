@@ -27,47 +27,47 @@ const renderCarCards = (
     users: USER[],
     tag: CarFilterTag,
     emptyMessage: string
-  ) => {
+) => {
     const filteredCars = carDetails.filter((car) => {
-      if (!Array.isArray(car.tags)) {
-        console.warn(`Invalid tags for car: ${car.name || "Unknown car"}`);
-        return false;
-      }
-      return true;
+        if (!Array.isArray(car.tags)) {
+            console.warn(`Invalid tags for car: ${car.name || "Unknown car"}`);
+            return false;
+        }
+        return car.tags?.includes(tag);
     });
-  
+
     if (filteredCars.length === 0) {
-      return (
-        <div className="flex items-center justify-center text-center text-xs opacity-50 h-[388px] min-w-[304px] rounded-lg bg-white animate-pulse">
-          {emptyMessage}
-        </div>
-      );
+        return (
+            <div className="flex items-center justify-center text-center text-xs opacity-50 h-[388px] min-w-[304px] rounded-lg bg-white animate-pulse">
+                {emptyMessage}
+            </div>
+        );
     }
-  
+
     return filteredCars.map((car, index) => (
-      <Card
-        key={index}
-        data={{
-          slug: car.slug,
-          name: car.name,
-          price_per_day: car.price_per_day,
-          image: car.image,
-          type: car.type,
-          heart: car.heart,
-          original_price: car.original_price,
-          available: car.available,
-          fuel_capacity: car.fuel_capacity,
-          seating_capacity: car.seating_capacity,
-          tags: car.tags,
-          transmission: car.transmission,
-          reviews: car.reviews,
-          desc: car.desc,
-        }}
-        users={users}
-      />
+        <Card
+            key={index}
+            data={{
+                slug: car.slug,
+                name: car.name,
+                price_per_day: car.price_per_day,
+                image: car.image,
+                type: car.type,
+                heart: car.heart,
+                original_price: car.original_price,
+                available: car.available,
+                fuel_capacity: car.fuel_capacity,
+                seating_capacity: car.seating_capacity,
+                tags: car.tags,
+                transmission: car.transmission,
+                reviews: car.reviews,
+                desc: car.desc,
+            }}
+            users={users}
+        />
     ));
-  };
-  
+};
+
 
 const FrontLanding = async (): Promise<JSX.Element> => {
     let carDetails: CAR[] = [];
