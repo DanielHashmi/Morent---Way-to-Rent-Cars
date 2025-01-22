@@ -1,4 +1,4 @@
-# Rental E-Commerce Website Documentation
+# MORENT Rental E-Commerce Website Documentation
 
 This repository contains the detailed documentation and implementation notes for the **Rental E-Commerce Website** project. It includes system design, API integrations, schema definitions, and feature implementation details.
 
