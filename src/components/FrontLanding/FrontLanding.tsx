@@ -33,7 +33,7 @@ const renderCarCards = (
         console.warn(`Invalid tags for car: ${car.name || "Unknown car"}`);
         return false;
       }
-      return car.tags.includes(tag);
+      return true;
     });
   
     if (filteredCars.length === 0) {
