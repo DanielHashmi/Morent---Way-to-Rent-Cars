@@ -19,7 +19,7 @@ const FrontLanding = async () => {
     } catch (error) {
         console.log(error);
     }
-
+    if (!carDetails.includes) return <div>Loading...</div>
     return (
         <div className="md:px-16 px-6 py-8 bg-[#f6f7f9]">
             <div className="flex gap-6 justify-center">
