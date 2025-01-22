@@ -14,7 +14,7 @@ const Hearted = async () => {
     users = await client.fetch(UsersQuery);
     user = users.find(user => user.email === session?.user?.email);
     const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
-    carDetails = (await data.json()).filter((car: CAR) => user?.favorites.includes(car.slug.current));
+    // carDetails = (await data.json()).filter((car: CAR) => user?.favorites.includes(car.slug.current));
   } catch (error) {
     console.log('No internet! or something else occurred 2.', error);
   }
