@@ -29,7 +29,7 @@ const renderCarCards = (
   emptyMessage: string
 ) => {
   const filteredCars = carDetails.filter(
-    (car) => Array.isArray(car.tags) && car.tags.includes(tag)
+    (car) => Array.isArray(car.tags) && car.tags?.includes(tag)
   );
 
   if (filteredCars.length === 0) {
