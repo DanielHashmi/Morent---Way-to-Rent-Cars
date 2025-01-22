@@ -18,7 +18,7 @@ const FrontLanding = async () => {
         users = await client.fetch(UsersQuery);
     } catch (error) {
         console.log(error);
-    }
+    } 
 
     return (
         <div className="md:px-16 px-6 py-8 bg-[#f6f7f9]">
