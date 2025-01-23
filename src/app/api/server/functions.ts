@@ -1,4 +1,7 @@
+'use server'
 import client from "@/sanity/lib/client";
+import { getServerSession } from "next-auth";
+import { authOption } from "../auth/[...nextauth]/authOptions";
 
 export async function toggleHeart(slug: string, email: string): Promise<void> {
     try {
@@ -33,5 +36,25 @@ export async function toggleHeart(slug: string, email: string): Promise<void> {
         }
     } catch (error) {
         console.log("Error toggling favorite:", error);
+    }
+}
+
+export const saveProfile = async (e: FormData) => {
+    const session = await getServerSession(authOption);
+    const { name, image } = { name: e.get('name'), image: e.get('image') };
+    try {
+        if (!session) return;
+        const user = await client.fetch(`*[_type == "user" && email == $email][0]`, { email: session?.user?.email })
+        if (user) {
+            await client
+                .patch(user._id)
+                .set({ name, image })
+                .commit();
+            console.log('Updated Profile!');
+        } else {
+            console.log('User not Found!');
+        }
+    } catch (error) {
+        console.log('Failed to updated profile!', error);
     }
 }

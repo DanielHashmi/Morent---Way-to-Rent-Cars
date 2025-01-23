@@ -18,11 +18,6 @@ export default defineType({
         defineField({
             name: 'image',
             title: 'Image',
-            type: 'url',
-        }),
-        defineField({
-            name: 'phone',
-            title: 'Phone',
             type: 'string',
         }),
         defineField({

@@ -18,9 +18,13 @@ export async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next();
   }
-  
+
   if (!token && request.nextUrl.pathname !== '/signin') {
     return NextResponse.redirect(new URL('/signin', request.url));
+  }
+
+  if (token && token.email !== process.env.ADMIN_EMAIL && request.nextUrl.pathname === '/admin') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   return NextResponse.next();

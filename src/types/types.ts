@@ -6,7 +6,6 @@ interface SanityImage {
     };
 }
 
-
 export interface CAR {
     // API Fields
     name: string;
@@ -30,7 +29,7 @@ export interface CAR {
 export interface USER {
     name: string;
     email: string;
-    image?: SanityImage;
+    image?: string;
     favorites: string[];
     role: string;
     notifications: string[];

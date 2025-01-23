@@ -5,7 +5,7 @@ import { CAR, USER } from "@/types/types";
 import { getServerSession } from "next-auth";
 import { authOption } from "../api/auth/[...nextauth]/authOptions";
 
-const Hearted = async () => {
+const Favorites = async () => {
   const session = await getServerSession(authOption)
   let carDetails: CAR[] = [];
   let users: USER[] = []
@@ -46,4 +46,4 @@ const Hearted = async () => {
   )
 }
 
-export default Hearted
+export default Favorites
