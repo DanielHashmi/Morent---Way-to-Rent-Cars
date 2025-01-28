@@ -23,7 +23,9 @@ const Favorites = async () => {
       <h1 className="text-center text-2xl text-[#3563e9] font-bold pt-6">Favorites</h1>
 
       <div className="flex gap-8 px-6 py-6 xl:w-[82rem] flex-wrap justify-center">
-        {!carDetails.length ? <div className="py-20">No Favorite cars!</div> : carDetails.map((obj, key) => (
+        {!carDetails.length ? <div className="flex justify-center items-center h-[50vh]">
+          You haven&apos;t added any favorite cars!
+        </div> : carDetails.map((obj, key) => (
           <Card key={key} data={{
             slug: obj.slug,
             name: obj.name,

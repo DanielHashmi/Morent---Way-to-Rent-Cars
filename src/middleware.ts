@@ -24,7 +24,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (token && token.email !== process.env.ADMIN_EMAIL && request.nextUrl.pathname === '/admin') {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.redirect(new URL('/not_admin', request.url));
+  }
+  
+  if (token && token.email === process.env.ADMIN_EMAIL && request.nextUrl.pathname === '/not_admin') {
+    return NextResponse.redirect(new URL('/admin', request.url));
   }
 
   return NextResponse.next();

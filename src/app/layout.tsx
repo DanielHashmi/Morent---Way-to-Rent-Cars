@@ -12,7 +12,7 @@ import { getServerSession } from "next-auth";
 import { authOption } from "./api/auth/[...nextauth]/authOptions";
 
 // Don't show Navbar and footer in these pages
-const disallowedPages = ['/signin', '/studio']
+const disallowedPages = ['/signin', '/studio','/not_admin']
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'], display: 'swap' });
 

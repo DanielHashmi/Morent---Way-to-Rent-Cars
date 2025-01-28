@@ -13,12 +13,12 @@ const Footer = ({ disallowedPages }: { disallowedPages: string[] }) => {
                     <div className="flex flex-col lg:flex-row gap-10">
                         <div className="w-1/2 space-y-6">
                             <Link href={'/'}><Image src={'/logo.svg'} alt="logo" width={100} height={100} /></Link>
-                            <div className="max-w-sm">Our vision is to provide convenience and help increase your sales business.</div>
+                            <div className="max-w-sm">Our vision is to put every car on work and bring affordability and convenience for you.</div>
                         </div>
                         <div className="lg:w-1/2 flex gap-20 flex-wrap lg:flex-nowrap lg:justify-between">
                             <FooterCard bold={false} input={false} links={['How it works', 'Featured', 'Partnership', 'Business Relation']} title="About" />
                             <FooterCard bold={false} input={false} links={['Events', 'Blogs', 'Podcast', 'Invite a friend']} title="Community" />
-                            <FooterCard bold={false} input={false} links={['Booking','Favorites', 'Category']} title="Quick Navigate" />
+                            <FooterCard bold={false} input={false} links={['Booking', 'Favorites', 'Category']} title="Quick Navigate" />
                         </div>
                     </div>
 

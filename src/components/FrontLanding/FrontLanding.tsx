@@ -77,7 +77,9 @@ const FrontLanding = async (): Promise<JSX.Element> => {
         [carDetails, users] = await Promise.all([fetchCarDetails(), fetchUsers()]);
     } catch (error) {
         console.error(error);
-        return <div>Oops! Something went wrong.</div>;
+        return <div className="flex justify-center items-center h-[50vh]">
+            Oops! Some Error Occurred, Please refresh the page or check your connection
+        </div>
     }
 
     return (

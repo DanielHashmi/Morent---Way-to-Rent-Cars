@@ -32,5 +32,5 @@ export interface USER {
     image?: string;
     favorites: string[];
     role: string;
-    notifications: string[];
+    notifications: { name: string; text: string }[];
 }

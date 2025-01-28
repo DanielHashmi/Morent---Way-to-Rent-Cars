@@ -1,8 +1,12 @@
+import Image from "next/image";
+
 const IconButton = ({ icon, redDot, className }: { icon: string; redDot: boolean, className?: string }) => {
     return <div className={`${className} flex relative items-center justify-center size-11 rounded-full border border-gray-300 bg-white shadow-sm hover:bg-gray-50`}>
-        <img
+        <Image
             src={icon}
-            alt="like-icon"
+            width={100}
+            height={100}
+            alt="icon"
             className={`${className} size-11 rounded-full`}
         />
         {redDot && (

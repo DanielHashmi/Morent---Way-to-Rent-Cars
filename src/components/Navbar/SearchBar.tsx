@@ -93,7 +93,7 @@ export default function SearchBar() {
             </div>
             <button
                 onClick={() => setShowAdvanceFilter(!showAdvanceFilter)}
-                className="border md:border-0 p-3 md:p-0 rounded-lg md:rounded-none advanceFilter">
+                className={`border md:border-0 p-3 md:p-0 rounded-lg md:rounded-none ${!showAdvanceFilter && 'opacity-70'} advanceFilter`}>
                 <Image src={'/filter.png'} alt="logo" width={100} height={100} className="size-6 min-w-6 advanceFilter" />
             </button>
 

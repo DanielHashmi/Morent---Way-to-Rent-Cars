@@ -1,12 +1,15 @@
 'use client'
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-const SignIn = () => {
+const Not_Admin = () => {
     const { data: session, status } = useSession();
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-sm bg-white rounded-lg shadow-lg p-6 flex flex-col items-center gap-6">
-                <Image src={'/logo.svg'} alt="logo" width={200} height={200} />
+                <Image src={'/black-lock.png'} alt="lock-icon" width={200} height={200} />
+                <p className="text-center text-gray-700">
+                    You don&apos;t have the necessary permissions to access the Admin Page. If you are the admin, please log in with your admin credentials.
+                </p>
                 <button
                     onClick={() => session ? signOut() : signIn('google')}
                     className="w-full flex cursor-pointer items-center justify-center bg-white text-gray-600 border border-gray-300 rounded-lg shadow-sm px-4 py-2 hover:bg-gray-100 transition"
@@ -16,9 +19,9 @@ const SignIn = () => {
                     {status === 'loading' && <Image src={'/loading.gif'} height={40} width={40} alt="loading-gif" className="w-5 h-5 mr-2" />}
                 </button>
             </div>
-        </div>
+        </div >
 
     );
 }
 
-export default SignIn;
+export default Not_Admin;

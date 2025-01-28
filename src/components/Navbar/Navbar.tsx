@@ -15,12 +15,17 @@ const Navbar = ({ disallowedPages, user }: { disallowedPages: string[]; user: US
   const { data: session } = useSession()
   const [showProfile, setShowProfile] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [image, setImage] = useState(user.image);
+  const [message, setMessage] = useState<number>();
 
   useEffect(() => {
     document.addEventListener('click', (e) => {
       if (!(e.target as HTMLElement).classList.contains('settings')) {
         setShowSettings(false);
+      }
+      if (!(e.target as HTMLElement).classList.contains('notification')) {
+        setShowNotifications(false);
       }
     })
   }, [])
@@ -42,8 +47,8 @@ const Navbar = ({ disallowedPages, user }: { disallowedPages: string[]; user: US
             <button
               onFocus={() => { setShowProfile(true) }}
               onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
-              className="block md:hidden">
-              <IconButton icon="/user.png" redDot={false} />
+              className={`block md:hidden rounded-full ring-gray-200 ${showProfile && 'ring'}`}>
+              <IconButton icon={image || "/user.png"} redDot={false} />
             </button>
           </div>}
 
@@ -52,56 +57,56 @@ const Navbar = ({ disallowedPages, user }: { disallowedPages: string[]; user: US
             <button
               onFocus={() => { setShowProfile(true) }}
               onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
-              className="block md:hidden">
-              {path !== 'category' && <IconButton icon={session?.user?.image || "/user.png"} redDot={false} />}
+              className={`block md:hidden rounded-full ring-gray-200 ${showProfile && 'ring'}`}>
+              {path !== 'category' && <IconButton icon={image || "/user.png"} redDot={false} />}
             </button>
           </div>
           <SearchBar />
         </div>
         <div className="gap-5 flex absolute md:relative">
-          <Link href={'/favorites'} className="md:block hidden">
+          <Link href={'/favorites'} className={`md:block hidden rounded-full ring-gray-200 ${pathname.startsWith('/favorites') && 'ring'}`} >
             <IconButton icon="/like.png" redDot={false} />
           </Link>
 
-          <div className="md:block hidden">
-            <IconButton icon="/bell.png" redDot />
-          </div>
+          <button
+            onFocus={() => setShowNotifications(true)}
+            className={`md:block hidden rounded-full notification ring-gray-200 ${showNotifications && 'ring'}`}>
+            <IconButton className="notification" icon="/bell.png" redDot={!(user.notifications === null)} />
+          </button>
 
           <button
             onFocus={() => setShowSettings(true)}
-            className="md:block hidden rounded-full ring ring-transparent focus:ring-gray-100">
+            className={`md:block hidden rounded-full ring-gray-200 ${showSettings && 'ring'}`}>
             <IconButton className="settings" icon="/setting.png" redDot={false} />
           </button>
 
           <button
             onBlur={() => { setTimeout(() => { setShowProfile(false) }, 100) }}
             onFocus={() => setShowProfile(true)}
-            className="hidden md:block rounded-full ring ring-transparent focus:ring-gray-300">
+            className={`hidden md:block rounded-full ring-gray-200 ${showProfile && 'ring'}`}>
             <IconButton icon={image || "/user.png"} redDot={false} />
           </button>
 
-          {/* popup profile */}
-          {showProfile && <div className={`bg-[#f6f7f9] p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl max-h-[27rem] ${path.includes('category') && '-top-12'} md:top-16 z-50 absolute overflow-y-auto`}>
-            <div className="text-sm opacity-50">{session?.user?.email}</div>
+          {/* popup notifications */}
+          <div className={`${path.includes('category') && '-top-12'} ${!showNotifications && 'hidden'} min-w-[236px] bg-[#f6f7f9] notification p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl md:top-16 z-50 absolute overflow-y-auto`}>
+            <div className="text-sm opacity-50 notification">Notifications</div>
 
-            <Link href={'/favorites'} className="md:hidden block">
-              <IconButton icon="/like.png" redDot={false} />
-            </Link>
+            <div className="flex flex-col gap-3 notification w-full">
 
-            <div className="md:hidden block">
-              <IconButton icon="/bell.png" redDot />
+              {user.notifications ? user.notifications.map((user, key) => {
+                const limit = message === key ? user.text.length : 27;
+                return <div onClick={() => setMessage(key)} key={key} className="notification hover:ring-1 ring-0 ring-blue-300 cursor-pointer bg-white text-xs p-2">
+                  <span className="notification font-bold">{user.name}</span>
+                  <p className="notification text-[11px] opacity-50">
+                    {user.text.slice(0, limit)}{Number(user.text.length - user.text.slice(0, limit).length) <= 0 ? '' : '...'}
+                  </p>
+                </div>
+              }) : <div className="notification text-[11px] opacity-50 text-center">You don&apos;t have any notifications!</div>}
             </div>
-            <div className="md:hidden block">
-              <IconButton icon="/setting.png" redDot={false} />
-            </div>
-
-            <button onClick={() => signOut()} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Logout</button>
-            <Link href={'/booking'} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Bookings</Link>
-            {user.role === "Admin" && <Link href={'/admin'} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Admin</Link>}
-          </div>}
+          </div>
 
           {/* popup settings */}
-          <form onSubmit={save_profile} className={`${path.includes('category') && '-top-12'} ${!showSettings && 'hidden'} bg-[#f6f7f9] settings p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl md:top-16 z-50 absolute overflow-y-auto`}>
+          <form onSubmit={save_profile} className={`${path.includes('category') && '-top-12'} ${!showSettings && 'hidden'} min-w-[236px] bg-[#f6f7f9] settings p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl md:top-16 z-50 absolute overflow-y-auto`}>
             <div className="text-sm opacity-50 settings">Setup Profile</div>
 
             <div className="flex flex-col gap-2 w-full settings">
@@ -115,8 +120,34 @@ const Navbar = ({ disallowedPages, user }: { disallowedPages: string[]; user: US
 
             <button type="submit" className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg text-sm text-nowrap">Save Changes</button>
           </form>
+
+          {/* popup profile */}
+          {showProfile && <div className={`bg-[#f6f7f9] p-6 flex flex-wrap justify-center gap-6 shadow-xl rounded-xl max-h-[27rem] ${path.includes('category') && '-top-12'} md:top-16 z-50 absolute overflow-y-auto`}>
+            <div className="text-sm opacity-50">{session?.user?.email}</div>
+
+            <Link href={'/favorites'} className={`block md:hidden rounded-full ring-gray-200 ${pathname.startsWith('/favorites') && 'ring'}`} >
+              <IconButton icon="/like.png" redDot={false} />
+            </Link>
+            <button
+              onFocus={() => setShowNotifications(true)}
+              className={`block md:hidden rounded-full notification ring-gray-200 ${showNotifications && 'ring'}`}>
+              <IconButton className="notification" icon="/bell.png" redDot />
+            </button>
+
+            <button
+              onFocus={() => setShowSettings(true)}
+              className={`block md:hidden rounded-full ring-gray-200 ${showSettings && 'ring'}`}>
+              <IconButton className="settings" icon="/setting.png" redDot={false} />
+            </button>
+
+            <button onClick={() => signOut()} className="text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap">Logout</button>
+            <Link href={'/booking'} className={`${pathname.startsWith('/booking') && 'ring'} text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap`}>Bookings</Link>
+            {user.role === "Admin" && <Link href={'/admin'} className={`${pathname.startsWith('/admin') && 'ring'} text-center w-full bg-white py-2 px-5 hover:ring cursor-pointer rounded-lg  text-nowrap`}>Admin</Link>}
+          </div>}
+
+
         </div>
-      </div>
+      </div >
     )
   }
 }
