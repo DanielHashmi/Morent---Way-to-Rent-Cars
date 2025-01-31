@@ -107,7 +107,6 @@ export default function SearchBar() {
                                 slug: car.slug,
                                 name: car.name,
                                 price_per_day: car.price_per_day,
-                                image: car.image,
                                 type: car.type,
                                 heart: car.heart,
                                 original_price: car.original_price,
@@ -116,8 +115,10 @@ export default function SearchBar() {
                                 seating_capacity: car.seating_capacity,
                                 tags: car.tags,
                                 transmission: car.transmission,
-                                desc: car.desc,
                                 reviews: car.reviews,
+                                desc: car.desc,
+                                rating: car.rating,
+                                gallery: car.gallery,
                             }} users={users}
                         />
                     ))}

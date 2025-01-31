@@ -51,7 +51,6 @@ const renderCarCards = (
                 slug: car.slug,
                 name: car.name,
                 price_per_day: car.price_per_day,
-                image: car.image,
                 type: car.type,
                 heart: car.heart,
                 original_price: car.original_price,
@@ -62,6 +61,8 @@ const renderCarCards = (
                 transmission: car.transmission,
                 reviews: car.reviews,
                 desc: car.desc,
+                rating: car.rating,
+                gallery: car.gallery,
             }}
             users={users}
         />

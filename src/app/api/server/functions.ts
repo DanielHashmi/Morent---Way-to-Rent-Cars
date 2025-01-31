@@ -2,6 +2,13 @@
 import client from "@/sanity/lib/client";
 import { getServerSession } from "next-auth";
 import { authOption } from "../auth/[...nextauth]/authOptions";
+import ShipEngine from "shipengine";
+
+export const shipengine = new ShipEngine({
+    apiKey: process.env.SHIPENGINE_API_KEY as string,
+});
+
+
 
 export async function toggleHeart(slug: string, email: string): Promise<void> {
     try {

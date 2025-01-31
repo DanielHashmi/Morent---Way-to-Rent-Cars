@@ -48,11 +48,6 @@ export default defineType({
             description: 'Original price before discount (if applicable)',
         }),
         defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'image',
-        }),
-        defineField({
             name: 'tags',
             title: 'Tags',
             type: 'array',
@@ -77,7 +72,18 @@ export default defineType({
             type: 'slug',
             options: { source: 'name' }
         }),
-
+        defineField({
+            name: 'gallery',
+            title: 'Gallery',
+            type: 'array',
+            of: [{ type: 'image' }],
+            description: 'Array of images for the car gallery',
+        }),
+        defineField({
+            name: 'rating',
+            title: 'Rating',
+            type: 'number',
+        }),
         // Detail Page Specific Fields
         defineField({
             name: 'desc',

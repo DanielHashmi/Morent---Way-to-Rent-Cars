@@ -25,22 +25,23 @@ const Favorites = async () => {
       <div className="flex gap-8 px-6 py-6 xl:w-[82rem] flex-wrap justify-center">
         {!carDetails.length ? <div className="flex justify-center items-center h-[50vh]">
           You haven&apos;t added any favorite cars!
-        </div> : carDetails.map((obj, key) => (
+        </div> : carDetails.map((car, key) => (
           <Card key={key} data={{
-            slug: obj.slug,
-            name: obj.name,
-            price_per_day: obj.price_per_day,
-            image: obj.image,
-            type: obj.type,
-            heart: obj.heart,
-            original_price: obj.original_price,
-            available: obj.available,
-            fuel_capacity: obj.fuel_capacity,
-            seating_capacity: obj.seating_capacity,
-            tags: obj.tags,
-            transmission: obj.transmission,
-            reviews: obj.reviews,
-            desc: obj.desc
+            slug: car.slug,
+            name: car.name,
+            price_per_day: car.price_per_day,
+            type: car.type,
+            heart: car.heart,
+            original_price: car.original_price,
+            available: car.available,
+            fuel_capacity: car.fuel_capacity,
+            seating_capacity: car.seating_capacity,
+            tags: car.tags,
+            transmission: car.transmission,
+            reviews: car.reviews,
+            desc: car.desc,
+            rating: car.rating,
+            gallery: car.gallery,
           }} users={users} />
         ))}
       </div>
