@@ -1,5 +1,5 @@
 'use client'
-import { getCents } from "@/app/api/client/functions";
+import { getCents } from "@/lib/client/functions";
 import PaymentForm from "@/components/Payment/PaymentForm";
 import { CAR } from "@/types/types";
 import { Elements } from "@stripe/react-stripe-js";

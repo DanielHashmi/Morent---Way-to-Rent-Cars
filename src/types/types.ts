@@ -78,5 +78,22 @@ export interface PAYMENT {
     payment_date: string;
 }
 
-// ShipEngine
+// Booking
+export interface BOOKING {
+    user_name: string;
+    payment_intent: string;
+    user_address: string;
+    user_phone: string;
+    user_email: string;
+    car_name: string;
+    drop_off_location: string;
+    total_price: number;
+    city: string;
+    pick_up_location: string;
+    pick_up_time: string;
+    pick_up_date: string;
+    drop_off_time: string;
+    drop_off_date: string;
+    terms: boolean;
+}
 

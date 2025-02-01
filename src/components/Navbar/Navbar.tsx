@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { USER } from "@/types/types"
-import { saveProfile } from "@/app/api/server/functions"
+import { saveProfile } from "@/lib/server/actions"
 
 const Navbar = ({ disallowedPages, user }: { disallowedPages: string[]; user: USER }) => {
   const pathname = usePathname();

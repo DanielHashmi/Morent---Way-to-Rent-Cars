@@ -1,6 +1,6 @@
 'use client'
 import buildImg from '@/sanity/lib/buildImg'
-import { CAR, SHIPMENT_PAYMENT_FORM_DATA } from '@/types/types'
+import { BOOKING, CAR, SHIPMENT_PAYMENT_FORM_DATA } from '@/types/types'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
@@ -11,7 +11,8 @@ import {
     PaymentElement,
 } from "@stripe/react-stripe-js";
 import InputField from './InputField'
-import { getCents } from '@/app/api/client/functions'
+import { getCents } from '@/lib/client/functions'
+import { useSession } from 'next-auth/react'
 
 const paymentFormSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters").max(50, "Name is too long"),
@@ -29,6 +30,7 @@ const paymentFormSchema = z.object({
 
 
 const PaymentForm = ({ details }: { details: CAR }) => {
+    const { data: session } = useSession();
     const stripe = useStripe();
     const elements = useElements();
     const [errorMessage, setErrorMessage] = useState<string>();
@@ -82,6 +84,31 @@ const PaymentForm = ({ details }: { details: CAR }) => {
                 setLoading(false);
                 return;
             }
+            // Initiate booking
+            await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/booking`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    car_name: details.name,
+                    user_email: session?.user?.email || '',
+                    pick_up_location: formData.pickUpLocation,
+                    pick_up_time: formData.pickUpTime,
+                    pick_up_date: formData.pickUpDate,
+                    drop_off_location: formData.dropOffLocation,
+                    drop_off_time: formData.dropOffTime,
+                    drop_off_date: formData.dropOffDate,
+                    user_name: formData.name,
+                    user_address: formData.address,
+                    user_phone: formData.phone,
+                    city: formData.city,
+                    total_price: formData.totelPrice,
+                    terms: formData.terms,
+                    payment_intent: clientSecret,
+                } as BOOKING),
+            })
+
             const { error } = await stripe.confirmPayment({
                 elements,
                 clientSecret,
@@ -89,6 +116,7 @@ const PaymentForm = ({ details }: { details: CAR }) => {
                     return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment_success?car_slug=${details.slug.current}`,
                 },
             });
+
             setErrorMessage(error.message);
             setLoading(false);
         } catch (err) {
@@ -254,11 +282,16 @@ const PaymentForm = ({ details }: { details: CAR }) => {
                     </div>
 
                     <div className="flex gap-4 items-center">
-                        <Image className="size-28 object-contain rounded-xl" src={details.gallery[0] ? buildImg(details.gallery[0] as SanityImageSource).width(400).url() : '/any.png'} alt="car-img" width={100} height={100} />
+                        <Image className="size-28 object-contain rounded-xl" src={(details.gallery || [])[0] ? buildImg(details.gallery[0] as SanityImageSource).width(400).url() : '/any.png'} alt="car-img" width={100} height={100} />
                         <div className="relative flex flex-col gap-2" >
                             <div className="text-2xl font-bold">{details.name}</div>
-                            <div className='text-xs opacity-50 flex gap-2'>
-                                <Image className="w-20" src={'/stars.png'} alt="stars-icon" width={100} height={100} />
+                            <div className='text-xs opacity-50 flex gap-1'>
+                                {Array.from({ length: details.rating }, (_, index) => (
+                                    <Image key={index} className="size-3" src={'/star.png'} alt="stars-icon" width={100} height={100} />
+                                ))}
+                                {Array.from({ length: 5 - details.rating }, (_, index) => (
+                                    <Image key={index} className="size-3 grayscale" src={'/star.png'} alt="stars-icon" width={100} height={100} />
+                                ))}
                                 {details.reviews}+ Reviewer
                             </div>
                         </div>

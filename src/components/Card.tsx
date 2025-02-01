@@ -5,7 +5,7 @@ import Button from './Button'
 import buildImg from '@/sanity/lib/buildImg'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import Link from 'next/link'
-import { toggleHeart } from '@/app/api/server/functions'
+import { toggleHeart } from '@/lib/server/actions'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 
