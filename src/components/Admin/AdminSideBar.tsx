@@ -51,7 +51,7 @@ const AdminSideBar = () => {
         </div>
 
 
-        <button  className="flex gap-2 hover:invert smooth text-[#90A3BF] mt-20 text-sm items-center px-2 ">
+        <button onClick={() => signOut()} className="flex gap-2 hover:invert smooth text-[#90A3BF] mt-20 text-sm items-center px-2 ">
             <Image className="size-6" src='/logout.png' alt="logout-icon" width={100} height={100} />
             Log Out
         </button>

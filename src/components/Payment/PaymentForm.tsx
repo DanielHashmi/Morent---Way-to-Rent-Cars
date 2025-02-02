@@ -37,7 +37,7 @@ const PaymentForm = ({ details }: { details: CAR }) => {
     const [clientSecret, setClientSecret] = useState("");
     const [loading, setLoading] = useState(false);
     const amount = getCents(details.price_per_day);
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
     const [formData, setFormData] = useState<SHIPMENT_PAYMENT_FORM_DATA>({
         name: '',
@@ -122,7 +122,7 @@ const PaymentForm = ({ details }: { details: CAR }) => {
         } catch (err) {
             if (err instanceof z.ZodError) {
                 // Set error messages in state
-                const newErrors: any = {};
+                const newErrors: Record<string, string> = {};
                 err.errors.forEach((error) => {
                     newErrors[error.path[0]] = error.message;
                 });
