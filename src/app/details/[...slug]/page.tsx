@@ -36,61 +36,6 @@ const Details = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
     return (
         <div className="flex justify-between">
-            {/* <div className="min-w-72 border-t hidden xl:flex flex-col p-6 gap-6">
-                <div className="text-xs opacity-50">TYPE</div>
-
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Sports <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    SUV <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    MPV <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Sedan <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Coupe <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Hatchback <span className="opacity-50">(12)</span>
-                </div>
-
-                <div className="text-xs opacity-50">CAPACITY</div>
-
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    2 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    4 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    6 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    8 Person <span className="opacity-50">(12)</span>
-                </div>
-
-                <div className="text-xs opacity-50">PRICE</div>
-
-
-                <div className="flex gap-2 items-start flex-col">
-                    <Image className="w-full" src='/seekbar.svg' alt="checkbox-icon" width={100} height={100} />
-                    Max. $100.00
-                </div>
-            </div> */}
             <div className="md:px-16 px-6 py-8 bg-[#f6f7f9] w-full">
 
                 <div className="flex items-start gap-6 flex-col lg:flex-row">

@@ -12,7 +12,6 @@ import { useSession } from 'next-auth/react'
 const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
     const { data: session } = useSession();
     const [heart, setHeart] = useState(false);
-    console.log(data);
 
     useEffect(() => {
         if (users.some(user => user.favorites)) {

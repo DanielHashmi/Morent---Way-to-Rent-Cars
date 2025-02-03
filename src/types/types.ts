@@ -97,3 +97,38 @@ export interface BOOKING {
     terms: boolean;
 }
 
+// Shipment
+export interface SHIPMENT {
+    name: string;
+    phone: string;
+    address: string;
+    city: string;
+    state_province: string;
+    postal_code: string;
+    country_code: string;
+    user_email: string;
+    payment_intent: string;
+    car_slug: string;
+}
+
+// Rates
+export interface RATE_OBJECT {
+    shippingAmount: {
+        amount: number;
+        currency: string;
+    };
+    carrierFriendlyName: string;
+    rateId: string;
+}
+
+// Tracking
+export interface TRACKING {
+    tracking_number: string;
+    label_id: string;
+    carrier: string;
+    status: string;
+    estimated_delivery_date: string;
+    payment_intent: string;
+    updatedAt: string;
+    amount: number;
+}

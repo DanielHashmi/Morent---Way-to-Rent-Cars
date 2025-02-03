@@ -18,7 +18,6 @@ const CategoryComponent = () => {
     const searchParams = useSearchParams();
     const tag = searchParams.get('tag') || ' ';
     const [users, setUsers] = useState<USER[]>([])
-    console.log(carDetails);
 
     useEffect(() => {
         const getData = async () => {
