@@ -5,7 +5,7 @@ import Button from './Button'
 import buildImg from '@/sanity/lib/buildImg'
 import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import Link from 'next/link'
-import { toggleHeart } from '@/server/functions'
+import { toggleHeart } from '@/lib/server/actions'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 
@@ -15,7 +15,7 @@ const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
 
     useEffect(() => {
         if (users.some(user => user.favorites)) {
-            const isHearted = users.find(user => user.email === session?.user?.email)?.favorites.includes(data.slug.current)
+            const isHearted = users.find(user => user.email === session?.user?.email)?.favorites?.includes(data.slug.current)
             if (isHearted) setHeart(isHearted);
         }
     }, [data.slug, users, session])
@@ -30,20 +30,24 @@ const Card = ({ data, users }: { data: CAR, users: USER[] }) => {
             <Image className="w-8 h-8 rounded-full bg-white p-1" src={heart ? '/heart.svg' : '/heartBorder.svg'} alt="heart-icon" width={32} height={32} />
         </button>
         <div className="relative h-48 mb-4">
-            <Image className="object-contain h-full w-full rounded-2xl min-h-32" src={buildImg(data.image as SanityImageSource).width(300).url()} alt="Controller-Image" layout="fill" />
+            <Image className="object-contain h-full w-full rounded-2xl min-h-32" src={buildImg(data.gallery[0] as SanityImageSource).width(300).url()} alt="Controller-Image" layout="fill" />
 
         </div>
 
         <div className='flex justify-between items-center mt-2'>
-            <div className="flex items-center">
-                <Image className="w-12 mr-2" src={'/gasoline.svg'} alt="gasoline-icon" width={24} height={24} />
+            <div className="flex items-center gap-1">
+                <Image className="w-4" src={'/tank.png'} alt="tank-icon" width={24} height={24} />
+                <div className='text-[#90A3BF] font-normal text-sm'>{data.fuel_capacity}</div>
             </div>
-            <div className="flex items-center">
-                <Image className="w-14 mr-2" src={'/manual.svg'} alt="engine-icon" width={24} height={24} />
+            <div className="flex items-center gap-1">
+                <Image className="w-4" src={'/tire.png'} alt="tire-icon" width={24} height={24} />
+                <div className='text-[#90A3BF] font-normal text-sm'>{data.transmission}</div>
             </div>
-            <div className="flex items-center">
-                <Image className="w-14 mr-2" src={'/people.svg'} alt="people-icon" width={24} height={24} />
+            <div className="flex items-center gap-1">
+                <Image className="w-4" src={'/persons.png'} alt="persons-icon" width={24} height={24} />
+                <div className='text-[#90A3BF] font-normal text-sm'>{data.seating_capacity}</div>
             </div>
+
         </div>
         <div className='flex justify-between items-center mt-2'>
             <div className='flex flex-col'>

@@ -20,6 +20,7 @@ export const authOption: AuthOptions = {
                     name,
                     email,
                     image,
+                    role: email === process.env.ADMIN_EMAIL ? 'Admin' : 'User',
                 });
             }
 

@@ -4,21 +4,19 @@ const payment = {
     title: 'Payment',
     fields: [
         {
-            name: 'payment_id',
+            name: 'client_secret',
             type: 'string',
-            title: 'Payment ID',
+            title: 'Client Secret',
         },
         {
-            name: 'booking',
-            type: 'reference',
-            title: 'Booking',
-            to: [{ type: 'booking' }],
+            name: 'car_slug',
+            type: 'string',
+            title: 'Car Slug',
         },
         {
-            name: 'user',
-            type: 'reference',
-            title: 'User',
-            to: [{ type: 'user' }],
+            name: 'user_email',
+            type: 'string',
+            title: 'User Email',
         },
         {
             name: 'amount',
@@ -28,7 +26,7 @@ const payment = {
         {
             name: 'status',
             type: 'string',
-            title: 'Payment Status',
+            title: 'Status',
         },
         {
             name: 'method',
@@ -37,7 +35,7 @@ const payment = {
         },
         {
             name: 'payment_date',
-            type: 'datetime',
+            type: 'string',
             title: 'Payment Date',
         },
     ],

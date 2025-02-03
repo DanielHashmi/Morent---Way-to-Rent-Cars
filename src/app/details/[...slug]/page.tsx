@@ -1,12 +1,11 @@
 import Button from "@/components/Button"
 import Card from "@/components/Card"
+import Images from "@/components/Details/Images";
 import Header from "@/components/Header"
 import IconButton from "@/components/Navbar/IconButton"
-import buildImg from "@/sanity/lib/buildImg";
 import client from "@/sanity/lib/client";
 import { CardQuery, UsersQuery } from "@/sanity/lib/grok";
 import { CAR, USER } from "@/types/types";
-import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import Image from "next/image"
 import Link from "next/link";
 
@@ -20,13 +19,12 @@ export async function generateStaticParams() {
     }
 };
 
-const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
+const Details = async ({ params }: { params: Promise<{ slug: string }> }) => {
     const slug = (await params).slug[0];
     let carDetails: CAR[] = [];
     let users: USER[] = [];
     try {
-        const data = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cars`);
-        carDetails = await data.json();
+        carDetails = await client.fetch(CardQuery);
         users = await client.fetch(UsersQuery);
     } catch (error) {
         console.log('No internet! or something else occurred 3', error);
@@ -38,127 +36,21 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
     return (
         <div className="flex justify-between">
-            <div className="min-w-72 border-t hidden xl:flex flex-col p-6 gap-6">
-                <div className="text-xs opacity-50">TYPE</div>
-
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Sports <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    SUV <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    MPV <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Sedan <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Coupe <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    Hatchback <span className="opacity-50">(12)</span>
-                </div>
-
-                <div className="text-xs opacity-50">CAPACITY</div>
-
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    2 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    4 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/uncheckedbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    6 Person <span className="opacity-50">(12)</span>
-                </div>
-                <div className="flex gap-2 items-center">
-                    <Image className="size-6" src='/checkbox.svg' alt="checkbox-icon" width={100} height={100} />
-                    8 Person <span className="opacity-50">(12)</span>
-                </div>
-
-                <div className="text-xs opacity-50">PRICE</div>
-
-
-                <div className="flex gap-2 items-start flex-col">
-                    <Image className="w-full" src='/seekbar.svg' alt="checkbox-icon" width={100} height={100} />
-                    Max. $100.00
-                </div>
-            </div>
             <div className="md:px-16 px-6 py-8 bg-[#f6f7f9] w-full">
 
                 <div className="flex items-start gap-6 flex-col lg:flex-row">
-                    <div className="gap-6 flex flex-col w-full">
-                        <div className={`relative text-white p-6 md:p-8 rounded-lg min-h-[20rem]`}>
-                            {/* Content Section */}
-                            <div className="relative z-10 flex flex-col gap-6 md:max-w-lg">
-                                <h1 className="text-2xl sm:text-4xl leading-tight max-w-sm">
-                                    Sports car with the best design and acceleration
-                                </h1>
-                                <p className="text-sm md:text-base text-blue-100 max-w-sm">
-                                    Safety and comfort while driving a
-                                    futuristic and elegant sports car
-                                </p>
-                            </div>
-
-                            {/* Car Image */}
-                            <Image
-                                src={buildImg(details.image as SanityImageSource).width(400).url()}
-                                alt="Car Rental"
-                                className="object-cover object-left"
-                                fill
-                            />
-                        </div>
-                        <div className="flex gap-2 sm:gap-6">
-                            <div className="bg-white ring-2 rounded-lg ring-blue-600 p-1 max-h-[116px] w-1/3 min-w-[32%] sm:min-w-28 max-w-[144px]">
-                                <div className={`rounded-lg size-full relative`}>
-                                    {/* Car Image */}
-                                    <Image
-                                        src={buildImg(details.image as SanityImageSource).width(400).url()}
-                                        alt="Car Rental"
-                                        className="object-contain w-40 h-full rounded-lg "
-                                        width={200}
-                                        height={200}
-
-                                    />
-                                </div>
-                            </div>
-
-                            <div className={`relative w-1/3 min-w-[32%] sm:min-w-28 max-w-[148px] max-h-[124px] p-6 md:p-8 rounded-lg`}>
-                                {/* Car Image */}
-                                <Image
-                                    src="/carhandle.png"
-                                    alt="Car Rental"
-                                    className="object-fit object-top"
-                                    fill
-                                />
-                            </div>
-                            <div className={`relative w-1/3 min-w-[32%] sm:min-w-28 max-w-[148px] max-h-[124px] p-6 md:p-8 rounded-lg`}>
-                                {/* Car Image */}
-                                <Image
-                                    src="/carseats.png"
-                                    alt="Car Rental"
-                                    className="object-fit object-top"
-                                    fill
-                                />
-                            </div>
-
-                        </div>
-                    </div>
+                    <Images details={details} />
                     <div className="size-full">
                         <div className="font-bold flex h-full justify-between bg-background flex-col gap-6 rounded-lg py-6 pl-1 sm:py-6 min-h-[28.8rem]">
                             <div className="relative flex flex-col gap-2" >
                                 <div className="text-xl">{details.name}</div>
                                 <div className='text-xs opacity-50 flex gap-2'>
-                                    <Image className="w-20" src={'/stars.png'} alt="stars-icon" width={100} height={100} />
+                                    {Array.from({ length: details.rating }, (_, index) => (
+                                        <Image key={index} className="w-4" src={'/star.png'} alt="stars-icon" width={100} height={100} />
+                                    ))}
+                                    {Array.from({ length: 5 - details.rating }, (_, index) => (
+                                        <Image key={index} className="w-4 grayscale" src={'/star.png'} alt="stars-icon" width={100} height={100} />
+                                    ))}
                                     {details.reviews}+ Reviewer
                                 </div>
 
@@ -249,22 +141,23 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
                         {
                             carDetails.filter(car => car.tags && car.tags.includes('recent')).length ?
-                                carDetails.filter(car => car.tags && car.tags.includes('recent')).slice(0, 6).map((obj, key) => (
+                                carDetails.filter(car => car.tags && car.tags.includes('recent')).slice(0, 6).map((car, key) => (
                                     <Card key={key} data={{
-                                        slug: obj.slug,
-                                        name: obj.name,
-                                        price_per_day: obj.price_per_day,
-                                        image: obj.image,
-                                        type: obj.type,
-                                        heart: obj.heart,
-                                        original_price: obj.original_price,
-                                        available: obj.available,
-                                        fuel_capacity: obj.fuel_capacity,
-                                        seating_capacity: obj.seating_capacity,
-                                        tags: obj.tags,
-                                        transmission: obj.transmission,
-                                        reviews: obj.reviews,
-                                        desc: obj.desc,
+                                        slug: car.slug,
+                                        name: car.name,
+                                        price_per_day: car.price_per_day,
+                                        type: car.type,
+                                        heart: car.heart,
+                                        original_price: car.original_price,
+                                        available: car.available,
+                                        fuel_capacity: car.fuel_capacity,
+                                        seating_capacity: car.seating_capacity,
+                                        tags: car.tags,
+                                        transmission: car.transmission,
+                                        reviews: car.reviews,
+                                        desc: car.desc,
+                                        rating: car.rating,
+                                        gallery: car.gallery,
                                     }} users={users} />
                                 ))
                                 : <div className="text-xs opacity-50 text-center">No Recent Cars Available</div>
@@ -276,22 +169,23 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
                 <div className="flex justify-start 2xl:justify-center overflow-hidden">
                     <div className="flex gap-8 py-6  max-w-[1308px] flex-wrap">
 
-                        {carDetails.filter(car => car.tags && car.tags.includes('recommended')).slice(0, 6).map((obj, key) => (
+                        {carDetails.filter(car => car.tags && car.tags.includes('recommended')).slice(0, 6).map((car, key) => (
                             <Card key={key} data={{
-                                slug: obj.slug,
-                                name: obj.name,
-                                price_per_day: obj.price_per_day,
-                                image: obj.image,
-                                type: obj.type,
-                                heart: obj.heart,
-                                original_price: obj.original_price,
-                                available: obj.available,
-                                fuel_capacity: obj.fuel_capacity,
-                                seating_capacity: obj.seating_capacity,
-                                tags: obj.tags,
-                                transmission: obj.transmission,
-                                reviews: obj.reviews,
-                                desc: obj.desc,
+                                slug: car.slug,
+                                name: car.name,
+                                price_per_day: car.price_per_day,
+                                type: car.type,
+                                heart: car.heart,
+                                original_price: car.original_price,
+                                available: car.available,
+                                fuel_capacity: car.fuel_capacity,
+                                seating_capacity: car.seating_capacity,
+                                tags: car.tags,
+                                transmission: car.transmission,
+                                reviews: car.reviews,
+                                desc: car.desc,
+                                rating: car.rating,
+                                gallery: car.gallery,
                             }} users={users} />
                         ))}
 
@@ -303,4 +197,4 @@ const Category = async ({ params }: { params: Promise<{ slug: string }> }) => {
     )
 }
 
-export default Category
+export default Details

@@ -69,22 +69,23 @@ const CategoryComponent = () => {
                     <div className="flex gap-8 py-6 justify-center flex-wrap">
                         {
                             filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).length ?
-                                filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).map((obj, key) => (
+                                filteredCars.filter(car => car.tags && car.tags[0] + ' '.includes(tag)).slice(0, more).map((car, key) => (
                                     <Card key={key} data={{
-                                        slug: obj.slug,
-                                        name: obj.name,
-                                        price_per_day: obj.price_per_day,
-                                        image: obj.image,
-                                        type: obj.type,
-                                        heart: obj.heart,
-                                        original_price: obj.original_price,
-                                        available: obj.available,
-                                        fuel_capacity: obj.fuel_capacity,
-                                        seating_capacity: obj.seating_capacity,
-                                        tags: obj.tags,
-                                        transmission: obj.transmission,
-                                        reviews: obj.reviews,
-                                        desc: obj.desc,
+                                        slug: car.slug,
+                                        name: car.name,
+                                        price_per_day: car.price_per_day,
+                                        type: car.type,
+                                        heart: car.heart,
+                                        original_price: car.original_price,
+                                        available: car.available,
+                                        fuel_capacity: car.fuel_capacity,
+                                        seating_capacity: car.seating_capacity,
+                                        tags: car.tags,
+                                        transmission: car.transmission,
+                                        reviews: car.reviews,
+                                        desc: car.desc,
+                                        rating: car.rating,
+                                        gallery: car.gallery,
                                     }} users={users} />
                                 )) : <div className="flex items-center justify-center text-center text-xs opacity-50 h-[388px] min-w-[304px] rounded-lg bg-white animate-pulse">Please wait or check you connection!</div>
                         }
